@@ -1,0 +1,144 @@
+.fenetre {
+  border: 1px solid #434b54;
+  overflow: hidden;
+  background-color: #deeffe;
+  width: 480px;
+  height: 320px;
+  position: absolute;
+}
+.titreFenetre {
+  background-color: transparent;
+  padding-left: 24px;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 0.8em;
+  text-align: left;
+  line-height: 1.6em;
+  cursor: move;
+}
+.titreFenetre ul {
+  border: 1px solid #666666;
+  margin: 4px 5px 5px 0px;
+  padding: 0px;
+  overflow: visible;
+  list-style-type: none;
+  position: relative;
+  display: block;
+}
+.titreFenetre li {
+  display: inline;
+  background-color: #ffff99;
+}
+.closeFenetre {
+  border: 1px outset #666666;
+  margin: 0px 6px 2px 2px;
+  padding: 2px 3px 2px 1px;
+  right: 2px;
+  height: 10px;
+  font-weight: bold;
+  font-size: 0.8em;
+  text-align: center;
+  cursor: pointer;
+  width: 32px;
+  color: white;
+  font-family: Verdana Ref,Helvetica,sans-serif;
+  line-height: 0.9em;
+  background-color: #b85a4b;
+  display: inline;
+}
+.basFenetre {
+  border: 1px groove #999999;
+  bottom: 1px;
+  position: absolute;
+  width: 100%;
+  height: 8px;
+}
+.contenuFenetre {
+  border-bottom: 2px groove silver;
+  margin: 12px 8px 5px;
+  padding: 1px;
+  overflow: hidden;
+  position: absolute;
+  top: 22px;
+  left: 0px;
+  bottom: 8px;
+  right: 0px;
+  background-color: white;
+}
+.topAppli {
+  padding-left: 4px;
+  color: #666666;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 0.7em;
+  display: none;
+}
+.corpsAppli {
+  font-family: Arial,Helvetica,sans-serif;
+  background-color: white;
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+menu {
+  padding: 0;
+  position: absolute;
+  list-style-type: none;
+  background-color: black;
+  color: white;
+  font-family: Arial,Helvetica,sans-serif;
+}
+menu div {
+  border-style: outset;
+  border-width: 2px;
+  margin: 0px;
+  font-size: 13px;
+  padding-left: 2px;
+  cursor: move;
+  font-weight: bold;
+}
+menu li {
+  border: 2px outset silver;
+  color: black;
+  background-color: silver;
+  font-size: 12px;
+  cursor: pointer;
+  padding-right: 12px;
+}
+menu li:hover {
+  border: 2px inset silver;
+}
+menu input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+menu label {
+  display: block;
+  width: 100%;
+  padding-left: 4px;
+  padding-right: 8px;
+  white-space: nowrap;
+}
+label.sous-menu {
+  background-image: url(./images/puceRep.png);
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+input[type="radio"]:checked + label.sous-menu {
+  background-image: url(./images/puceRepSelect.png);
+}
+input[type="radio"] + label {
+  background-color: transparent;
+}
+input[type="radio"]:checked + label {
+  background-color: white;
+}
+input[type="radio"] ~ menu {
+  margin-left: 64px;
+  display: none;
+}
+input[type="radio"]:checked ~ menu {
+  display: inline;
+}

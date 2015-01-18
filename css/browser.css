@@ -1,0 +1,121 @@
+ul {
+  margin-top: 0px;
+  padding-left: 0px;
+}
+img {
+}
+#etagere {
+  overflow: hidden;
+  height: 92px;
+}
+#viewPath {
+  border-style: inset;
+  border-width: 2px;
+  margin: 4px;
+  font-size: 70%;
+  overflow-x: scroll;
+  font-family: trebuchet ms,arial,tahoma,verdana,sans-serif;
+  height: 112px;
+  background-color: #a8a8a8;
+}
+#viewPath li {
+  float: left;
+  list-style-image: url(./images/puceRepertoire.png);
+  margin-left: 24px;
+  text-align: center;
+}
+#viewPath li:hover {
+  background-color: #ffffff;
+}
+#viewPath li:first-child {
+  list-style-type: none;
+}
+#viewPath li img {
+  margin-top: 4px;
+}
+#viewPath li p {
+  margin-top: -4px;
+}
+#browser {
+  border-style: inset;
+  border-width: 2px;
+  margin: 4px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  background-color: #666666;
+  font-weight: bold;
+  font-family: trebuchet ms,arial,tahoma,verdana,sans-serif;
+  font-size: 90%;
+	position: absolute;
+	top: 190px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+#browser > ul {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+#browser > ul > li {
+  border-style: ridge;
+  border-width: 2px;
+  background-color: #a8a8a8;
+  height: 100%;
+}
+#browser ul li div {
+  border-style: inset;
+  border-width: 1px;
+  color: white;
+  font-family: Verdana;
+  background-color: #4f4f4f;
+  text-align: center;
+  font-size: 10px;
+}
+#browser ul ul {
+  border:  none;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  font-family: Verdana;
+  font-weight: lighter;
+  left: 0px;
+  top: 22px;
+  font-size: 8px;
+  background-color: transparent;
+}
+#browser li {
+  margin: 0px;
+  padding: 2px;
+  list-style-type: none;
+  width: 140px;
+  height: 100%;
+  position: relative;
+  background-color: #a8a8a8;
+  float: left;
+}
+#browser ul ul li {
+	border:  none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#browser ul ul li.sel {
+  background-color: white;
+}
+#browser ul ul li:hover {
+  background-color: #cccccc;
+}
+li.rep {
+  background: transparent url(./images/puceRepertoire.gif) no-repeat scroll right center;
+}
+#browser li a {
+  text-decoration: none;
+}
+#browser li.plus {
+  border-bottom: 1px solid #b0b0b0;
+  background-position: right center;
+  background-repeat: no-repeat;
+}

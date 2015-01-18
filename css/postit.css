@@ -1,0 +1,26 @@
+/************ Classes ************/
+
+.postick {
+	position:absolute;
+	width:96px;
+	height:96px;
+	padding:8px 2px 2px 2px;
+	background:#FFFC7F;
+	box-shadow:2px 2px 2px #999999;
+	cursor:move;
+}
+
+/* Content to be editable inside the postick */
+.editable {
+	position:relative;
+	font-family: Lucida Handwriting;
+	font-size: 0.7em;
+	height:100%;
+	overflow:hidden;
+	text-shadow: 1px 1px 0px white;
+	cursor:text;
+}
+
+.editable:hover {
+	background:#FFFCAF;
+}

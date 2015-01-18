@@ -1,0 +1,57 @@
+/**
+ * horloge.css
+ * 
+ * @auteur     marc laville
+ * @Copyleft 2012
+ * @date       22/02/1012
+ * @version    0.1
+ * @revision   $0$
+ *
+ *
+ * horloge
+ */
+
+#horloge {
+	margin: 4px;
+	border: 4px double silver;
+	position: absolute;
+	width: 42px;
+	height: 42px;
+	border-radius:50%;
+}
+#heure {
+	-moz-transform: rotate(0deg);
+    -moz-transform-origin: 2px 13px;
+/*	-moz-transition: -moz-transform 10s linear 0s;;*/
+	border: 1px solid white;
+	background-color: transparent;
+	width: 2px;
+	height: 14px;
+	position: absolute;
+	top: 8px;
+	right: 18px;
+}
+#minute {
+	-moz-transform: rotate(0deg);
+    -moz-transform-origin: 1px 20px;
+/*	-moz-transition: -moz-transform 10s linear 0s;*/
+	position: absolute;
+	background-color: #666;
+	width: 2px;
+	height: 20px;
+	top: 0px;
+	right: 20px;
+}
+
+#trotteuse {
+	-moz-transform: rotate(0deg);
+    -moz-transform-origin: 0 24px;
+/*	-moz-transition: -moz-transform 10s linear 0s;*/
+    border-radius: 50% 50% 50% 50%;
+	position: absolute;
+	background-color: red;
+	width: 4px;
+	height: 4px;
+	top: -3px;
+	right: 17px;
+}

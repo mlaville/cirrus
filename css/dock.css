@@ -1,0 +1,163 @@
+body {
+  background: #dddddd none repeat scroll 0%;
+}
+#workSpace {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+.edit {
+  position: absolute;
+  bottom: 1px;
+  top: 0px;
+  right: 1px;
+  left: 1px;
+  background-color: white;
+  font-family: "Courier New",Courier,monospace;
+  font-size: 12px;
+  overflow-y: auto;
+}
+#dock {
+  position: absolute;
+  width: 68px;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+}
+ul {
+  list-style-type: none;
+}
+#dock ul {
+  margin-top: 0px;
+  padding-left: 0px;
+}
+#dock li {
+  border-style: outset;
+  margin: 2px;
+  list-style-type: none;
+  height: 64px;
+  text-align: center;
+  background-color: #82818f;
+}
+#dock li span {
+  display: none;
+}
+#dock li img {
+  margin-top: 6px;
+}
+
+/* Animation corbeille */
+@-moz-keyframes rotationRecycleur {
+	0%    { -moz-transform: rotate(0deg); }
+	50%   { -moz-transform: rotate(180deg); }
+	100%  { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes x-spin {
+	0%    { -webkit-transform: rotate(0deg); }
+	50%   { -webkit-transform: rotate(180deg); }
+	100%  { -webkit-transform: rotate(360deg); }
+}
+
+#recycleur {
+  border-style: outset;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 58px;
+  height: 58px;
+  text-align: center;
+  background-color: #82818f;
+}
+#recycleur img {
+  margin: 4px;
+}
+.recycle {
+}
+.rempli {
+}
+.recycle img {
+	-moz-animation: rotationRecycleur 3s linear infinite ;
+	-webkit-animation: rotationRecycleur 3s linear infinite ;
+}
+.rempli img {
+  background-image: url(./images/recyclerBullet.png);
+  background-position:  center center;
+  background-repeat: no-repeat;
+}
+
+#list_recycleur {
+  position: absolute;
+  bottom: 0px;
+  right: 58px;
+  height: 58px;
+  background-color: #33ff33;
+}
+
+/* 
+ * élèment sur le bureau
+ */
+#bureau  {
+	position:absolute;
+	top: 12px;
+	left: 120px;
+}
+#bureau  li {
+	display:inline;
+}
+
+.premierPlan {
+	z-index:100;
+}
+#workSpace figure {
+	float :left;
+	width : 86px;
+	display :block;
+	margin :2px;
+	padding : 2px;
+	text-align: center;
+	cursor:move;
+}
+figure.drag {
+	background-color: white;
+	border-radius:8px;
+}
+figcaption p{
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 0.7em;
+	text-align :center;
+	word-wrap: break-word;
+	cursor:text;
+}
+figcaption input{
+	display:block;
+	width:200%;
+	margin-left:-43px;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 0.7em;
+	padding : 0 2px;
+	border:none;
+	border-radius:4px;
+	
+}
+figcaption input[type="text"]:disabled {
+	display:none;
+}
+figcaption input[type="text"] + p {
+	display:none;
+}
+figcaption input[type="text"]:disabled  + p{
+	display :block;
+}
+
+audio {
+	width:100%;
+	margin:20px auto;
+}
+
+progress {
+	border: medium inset black;
+	background-color: #797979;
+}

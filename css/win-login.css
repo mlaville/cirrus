@@ -1,0 +1,214 @@
+body {
+  margin: 0;
+  background: #b5f9fc none repeat scroll 0% 50%;
+  padding: 0;
+}
+h1 {
+  font-family: Broadway;
+  text-shadow: #000000 0px 0px 10px;
+  color: #cccccc;
+  display: none;
+}
+fieldset {
+  border:  none;
+  margin: 8px;
+  padding: 0;
+}
+#ul_listLog img {
+  border: 2px ridge #226179;
+  border-radius: 4px;
+}
+
+#ul_listLog a:hover figure{
+	box-shadow: 0px 0px 12px #fff;
+}
+
+
+#ul_listLog li figure {
+  margin: 16px;
+}
+
+hr {
+  border-color: #999999;
+  display: none;
+}
+
+#div_login h1 {
+  text-align: center;
+}
+
+#div_login figure {
+	background: -moz-linear-gradient(-85deg, rgba(207,234,249,0.8) 0%, rgba(93,165,196,0.8) 46%, rgba(32,124,202,0.8) 49%, rgba(88,175,220,0.8) 100%);
+	border: 2px groove white;
+	padding: 12px;
+	width: 136px;
+	border-radius: 8px;
+	margin: auto;
+}
+#ul_listLog {
+	list-style: none outside none;
+	margin: 0;
+	text-align: center;
+	background-color: #CCC;
+	line-height: 0.6em;
+	font-size: 16px;
+	color: white;
+	background-color: transparent;
+}
+
+#ul_listLog li {
+	display: inline;
+	padding-left: 0;
+	width: auto;
+	text-align: center;
+}
+li a{
+	display: inline-block;
+	text-decoration: none;
+	-moz-transform: scale(.7);
+}
+
+#div_contenaire {
+	background: -moz-radial-gradient(center, ellipse cover, rgba(162,247,250,1) 6%, rgba(4,75,155,1) 100%); /* FF3.6+ */
+    text-align: center;
+  font-family: Arial,Helvetica,sans-serif;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+	position: fixed;
+  }
+
+#div_login form {
+	display:none;
+  }
+
+#div_login {
+	border:  none;
+	margin: auto;
+	padding: 12px 0;
+	bottom: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+	font-family: Arial,Helvetica,sans-serif;
+	width: 100%;
+	background-color: transparent;
+	text-align: center;
+}
+#div_login label {
+  margin: 6px 0;
+  display: none;
+  float: left;
+  width: 112px;
+  text-align: right;
+  color: #666666;
+}
+#div_login label:after {
+  content: " : ";
+}
+
+#div_erreur {
+  display: none;
+    color: white;
+    text-align: center;
+    text-shadow: 1px 1px 2px #333333;
+ }
+#div_erreur p:before{
+  background: #D43037 none repeat scroll 0% 50%;
+padding:2px 8px;
+    border-radius:16px;
+    border: 3px solid #fff;
+    content:"X";
+    margin:8px;
+    font-family: Arial Black;
+ }
+
+input[type="password"] {
+	margin:8px 8px 8px 42px;
+	border: thin  solid #666666;
+	padding: 4px 2px;
+	width: 240px;
+	border-radius: 3px;
+	box-shadow: 1px 1px 3px #9eddfa,
+		-1px -1px 3px #9eddfa;
+}
+input:-moz-placeholder:focus {
+	opacity:.8;
+}
+
+input[type="mail"] {
+	color: white;
+	background-color: transparent;
+	text-align: center;
+	border-style: none;
+	margin: 4px;
+	font-size: 1.4em;
+	width: 240px;
+	padding-left: 2px;
+	text-shadow: #333333 1px 1px 2px;
+}
+output {
+	color: white;
+	background-color: transparent;
+	text-align: center;
+	font-size: 1.4em;
+	text-shadow: #333333 1px 1px 2px;
+	top: 24px;
+	line-height: 2em;
+}
+button:hover {
+  top: 3px;
+}
+#btn_connect {
+	display:none;
+}
+#btn_connect_win {
+	border-style: none;
+	color: white;
+	font-family: Berlin Sans FB;
+	font-size: 2.1em;
+	letter-spacing: -11px;
+	line-height: 0.5em;
+	padding: 2px 12px 8px 2px;
+	cursor:pointer;
+	background: -moz-linear-gradient(center top , #E4F3FB 0%, #8ECDEC 48%, #3F84B3 51%, #80E7FB 100%) repeat scroll 0 0 transparent;
+	border-radius: 36px 36px 36px 36px;
+	box-shadow: 0 1px 2px #18384A, 0 -1px 2px #4F97BB;
+}
+
+#btn_annule, #btn_ok {
+	color: white;
+	border: thin  solid #88b6ce;
+	padding: 4px 32px;
+	cursor:pointer;
+	background: -moz-linear-gradient(top, rgba(75,118,150,1) 0%, rgba(30,99,138,1) 48%, rgba(19,75,108,1) 52%, rgba(37,117,154,1) 100%); /* FF3.6+ */
+	box-shadow: 1px 1px 2px #00304b, -1px -1px 2px #00304b;
+	border-radius: 3px;
+	margin: 16px;
+}
+
+#btn_annule:hover, #btn_ok:hover {
+	background: -moz-linear-gradient(top, rgba(80,189,237,1) 0%, rgba(30,99,138,1) 48%, rgba(19,75,108,1) 52%, rgba(80,189,237,1) 100%); /* FF3.6+ */
+}
+
+#form_log p {
+  background: transparent url(./images/ajax-loader.gif) no-repeat scroll center;
+  color: #999999;
+  text-align: center;
+  font-family: Arial,Helvetica,sans-serif;
+  font-weight: bold;
+  font-size: 0.9em;
+  text-shadow: #ffffff 1px 1px 4px;
+}
+
+#message {
+	font-family: Kunstler Script, Lucida Handwriting;
+	font-size: 2em;
+	text-align: center;
+	position: fixed;
+	width: 100%;
+	background-color: #f4e7d4;
+	color: #291806;
+	bottom: 0px;
+}

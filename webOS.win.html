@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Cirrus</title>
+	
+	<meta name="description" content="WebOS">
+	<link type="text/css" rel="stylesheet" href="./css/cirrus.css">
+	<link type="text/css" rel="stylesheet" href="./css/win-login.css">
+	<link type="text/css" rel="stylesheet" href="./css/dock.css">
+	<link type="text/css" rel="stylesheet" href="./css/fenetre.css">
+	<link type="text/css" rel="stylesheet" href="./css/browser.css">
+	<link type="text/css" rel="stylesheet" href="./css/postit.css">
+	<link type="text/css" rel="stylesheet" href="./css/horloge.css">
+	<link rel="stylesheet" type="text/css" href="./css/file-uploader.css" />	
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
+	<script type="text/javascript" src="http://localhost/JQueryUI/jquery-ui-1.11.2/jquery-ui.js"></script>
+	
+	<script type="text/javascript" src="./js/fileuploader.js"></script>
+	<script type="text/javascript" src="./js/panel.js"></script>
+	<script type="text/javascript" src="./js/browser.js"></script>
+	<script type="text/javascript" src="./js/horloge.js"></script>
+	<script type="text/javascript" src="./js/cirrus.js"></script>
+	<script type="text/javascript" src="./js/postIt.js"></script>
+	<script type="text/javascript" src="./js/lanceur.js"></script>
+	<script type="text/javascript" src="./js/wp.js"></script>
+</head>
+
+<body>
+	<div id="div_contenaire">
+		<div id="div_login">
+			<h1>cirrus</h1>
+			<hr>
+			<ul id="ul_listLog">
+				<li>
+					<a href="#">
+					<figure>
+						<img src="./css/images/win-Login-Screen.png" alt="">
+					</figure>
+					<output>me@polinux.net</output>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+					<figure>
+						<img src="./css/images/fontaine.png" alt="">
+					</figure>
+					<output>vava@polinux.net</output>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+					<figure>
+						<img src="./css/images/win-Login-Screen2.png" alt="">
+					</figure>
+					<output>HTML5</output>
+					</a>
+				</li>
+			</ul>
+
+			<form name="form_log" id="form_log">
+				<figure>
+				<img id="img_log" alt="" src="./css/images/win-Login-Screen.png">
+				</figure>
+
+				<fieldset>
+					<label>Login</label>
+						<input name="username" type="mail" id="input_user"><br>
+					<label>Mot de Passe</label>
+						<input name="password" type="password" placeholder="Mot de Passe">
+						<button name="btn_connect_win" type="button" id="btn_connect_win">---></button><br>
+				</fieldset>
+				<hr>
+				<p id="p_msgConnexion"></p>
+				<button name="bt" type="button" id="btn_connect">connexion</button><br>
+				<button name="annule" type="button" id="btn_annule">changer d'utilisateur</button>
+			</form>
+			<div id="div_erreur">
+				<p>le nom d'utilisateur ou le mot de passe est incorrect</p>
+				<button name="ok" type="button" id="btn_ok">ok</button>
+			</div>
+		</div>
+		<div id="message">Ceci n'est pas Windows</div>
+	</div>
+	
+	<div id="workSpace" style="display:none">
+
+		<ul id="bureau"></ul>
+		<div id="dock">
+			<ul>
+			  <li id="app_cirrus"><div class="cirrus">cirrus</div></li>
+			  <li id="app_preferences">
+				<div id = "horloge">
+					<div id = "heure"></div>
+					<div id = "minute"></div>
+					<div id = "trotteuse"></div>
+				</div>
+			  </li>
+			  <li data-appli="app_browser" id="app_browser">
+				<span class="nomApp">browser</span><img alt="dossier" src="./css/images/dossier.png">
+			  </li>
+			  <li id="app_edit"><img alt="home" src="./css/images/edit.png"></li>
+			  <li id="app_postit"><img alt="home" src="./css/images/postit.png"></li>
+			  <li id="app_test"><img alt="/" src="./css/images/ecran.png"></li>
+			</ul>
+		</div>
+		
+		<div id="recycleur">
+			<img alt="/" src="css/images/recycler.png">
+		</div>
+		<div id="list_recycleur">
+			<ul></ul>
+		</div>
+		
+
+	</div>
+
+</body>
+</html>

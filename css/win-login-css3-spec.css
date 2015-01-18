@@ -1,0 +1,23 @@
+#div_contenaire {
+	background: -moz-radial-gradient(100% , circle farthest-corner, rgba(162,247,250,1) 6%, rgba(4,75,155,1) 100%);
+	}
+figure {
+background: -moz-linear-gradient(-85deg, rgba(207,234,249,0.8) 0%, rgba(93,165,196,0.8) 46%, rgba(32,124,202,0.8) 49%, rgba(88,175,220,0.8) 100%);
+  border-radius: 8px;
+}
+input {
+  border-radius: 3px;
+}
+#btn_connect {
+    border-radius:36px;
+	background: -moz-linear-gradient(top,  rgba(228,243,251,1) 0%,  rgba(142,205,236,1) 48%, rgba(63,132,179,1) 51%, rgba(128,231,251,1)  100%);
+}
+#btn_connect {
+	background: -moz-linear-gradient(top, rgba(75,118,150,1) 0%, rgba(30,99,138,1) 48%, rgba(19,75,108,1) 52%, rgba(37,117,154,1) 100%); /* FF3.6+ */
+	box-shadow: 1px 1px 2px #00304b, -1px -1px 2px #00304b;
+	border-radius: 3px;
+}
+
+img {
+  border-radius: 4px;
+}
