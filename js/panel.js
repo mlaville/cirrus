@@ -16,7 +16,9 @@
  */
 
 function domFenetre(unTitre, unContenu, param) {
-	var divFenetre = document.createElement("div");
+	var divFenetre = document.createElement("div"),
+		t = divFenetre.appendChild( document.createElement("div") ),
+		c = t.appendChild( document.createElement("div") );
 	
 	if( param != undefined ) {
 		divFenetre.style.left = param.x;
@@ -25,10 +27,8 @@ function domFenetre(unTitre, unContenu, param) {
 		divFenetre.style.height = param.height;
 	}
 	divFenetre.className = "fenetre";
-	t = divFenetre.appendChild( document.createElement("div") );
 	t.className = "titreFenetre";
 	
-	c = t.appendChild( document.createElement("div") );
 	c.className = "closeFenetre";
 	c.appendChild( document.createTextNode("X") );
 	c.addEventListener("click", function() {
@@ -51,9 +51,9 @@ function domFenetre(unTitre, unContenu, param) {
 }
 
 function domItemMenu(unTitre, nomMenu, action) {
-	var item = document.createElement("li");
-	var input = item.appendChild(document.createElement("input"));
-	var label = item.appendChild(document.createElement("label"));
+	var item = document.createElement("li"),
+		input = item.appendChild(document.createElement("input")),
+		label = item.appendChild(document.createElement("label"));
 	
 	input.setAttribute( 'type', 'radio' );
 	input.setAttribute( 'name', nomMenu );

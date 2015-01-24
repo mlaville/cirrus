@@ -69,27 +69,19 @@ function deconnecte() {
 }
 
 function initApp () {
+	var divDock = document.getElementById('dock'),
+		ulDock = divDock.getElementsByTagName('ul')[0],
+		icons = $("#dock ul li");
 	
-	var icons = $("#dock ul li");
 	icons.dblclick(function(){
 		lanceApp(this.id);
 	});
 	
 	/* Affichage du menu cirrus */
 	document.getElementById("workSpace").appendChild( app_cirrus.construitMenu() );
-//	app_cirrus.construitBrowser();
-	/* Activation de la corbeille */
-	$("#recycleur").droppable({
-		tolerance: 'touch',
-		hoverClass: "recycle",
-		drop: function( event, ui ) {
-			element = ui.draggable[0];
-			app_postit.dropPostIt(element);
-			this.classList.add("rempli");  
-		}
-	});
 
-	app_postit.chargeListPostIt();
+	app_postit.init( ulDock );
+	app_edit.init( ulDock );
 
 	horloge();
 	
@@ -123,6 +115,7 @@ document.onreadystatechange = function() {
 				
 				ulListLog.style.display = 'none';
 				formLog.style.display = 'block';
+				formLog.password.focus();
 			}, false);
 		}
 				
@@ -131,17 +124,16 @@ document.onreadystatechange = function() {
 		
 		document.getElementById("btn_annule").addEventListener("click", 
 			function(){
-				document.getElementById("form_log").style.display = 'none';
-				document.getElementById("ul_listLog").style.display = 'block';
+				formLog.style.display = 'none';
+				ulListLog.style.display = 'block';
 			},
 			false);
 		
 		document.getElementById("btn_ok").addEventListener("click", 
 			function(){
 				document.getElementById("div_erreur").style.display = "none";
-				document.getElementById("ul_listLog").style.display = 'block';
-				document.getElementById("form_log").style.display = 'none';
-				document.getElementById("form_log").style.visibility = "visible";
+				ulListLog.style.display = 'block';
+				formLog.style.display = 'none';
 			},
 			false);
 	}

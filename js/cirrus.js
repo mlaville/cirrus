@@ -21,7 +21,7 @@
 
 
 var app_cirrus = {
-	version : 0.07,
+	version : 0.1,
 	root : 'Users/home/vava/-bureau/',
 //	home : './Disk/Users/home',
 	home : './Users/home',
@@ -50,9 +50,9 @@ var app_cirrus = {
 	 * Chargement d'un fichier par double click sur le bureau ou le browser
 	 */
 	dblClickFile : function(figure) {
-		var chemin = "./Disk/" + figure.querySelector("input[type='hidden']").value + "/";
-		var nomFichier = figure.querySelector("input").value;
-		var contenuFenetre = document.getElementById("workSpace").appendChild( domFenetre(nomFichier) )
+		var chemin = "./Disk/" + figure.querySelector("input[type='hidden']").value + "/",
+			nomFichier = figure.querySelector("input").value,
+			contenuFenetre = document.getElementById("workSpace").appendChild( domFenetre(nomFichier) )
 								.querySelector(".contenuFenetre");
 		
 		switch( nomFichier.split(".").pop().toLowerCase() ) {
@@ -65,6 +65,10 @@ var app_cirrus = {
 			case 'jpg' :
 				contenuFenetre.appendChild( document.createElement("img") )
 					.setAttribute( "src", chemin + nomFichier );
+			break;
+			
+			case 'txt' :
+				app_edit.open( chemin + nomFichier );
 			break;
 			
 			case 'wav' :
@@ -101,24 +105,26 @@ var app_cirrus = {
 	 *  renvoi un element li
 	 */
 	iconFichier : function(chemin, isDir){
-		var tabPath = chemin.split("/");
-		var nomFichier = tabPath.pop();
-		var li = document.createElement("li");
-		var figure = li.appendChild( document.createElement("figure") );
-		var img = figure.appendChild( document.createElement("img") );
-		var figcaption = figure.appendChild( document.createElement("figcaption") );
-		var input = figcaption.appendChild( document.createElement("input") );
+		var tabPath = chemin.split("/"),
+			nomFichier = tabPath.pop(),
+			extention = nomFichier.split(".").pop(), // Extrait l'extention
+			li = document.createElement("li"),
+			figure = li.appendChild( document.createElement("figure") ),
+			img = figure.appendChild( document.createElement("img") ),
+			figcaption = figure.appendChild( document.createElement("figcaption") ),
+			input = figcaption.appendChild( document.createElement("input") ),
+			hidden = document.createElement("input");
 		
 		input.setAttribute( 'type', 'text');
 		input.setAttribute( 'disabled', "true" );
 		input.value = nomFichier;
 		
-		figcaption.appendChild( document.createElement("p") )
-			.appendChild( document.createTextNode(nomFichier) );
+		figcaption.appendChild( document.createElement("p") ).textContent = nomFichier;
+//			.appendChild( document.createTextNode(nomFichier) );
 
-		var hidden = figcaption.appendChild( document.createElement("input") );
 		hidden.setAttribute( 'type', 'hidden');
 		hidden.value = tabPath.join('/'); //chemin;
+		figcaption.appendChild( hidden );
 		
 		/*
 		 * Gestion du doubleClick sur le libellé
@@ -128,7 +134,6 @@ var app_cirrus = {
 			return app_cirrus.saisieLibelle(this.querySelector("input"));
 		});		
 		
-		var extention = nomFichier.split(".").pop(); // Extrait l'extention
 		if (typeof isDir === 'undefined') { 
 		   isDir = false;
 		}
@@ -197,9 +202,8 @@ var app_cirrus = {
 			+ '<h2>Espace en ligne</h2>'
 			+ '<span>Votre bureau dans les nuages</span><span id="auteur"><small>par</small> <a>marc laville</a></span>'
 			+ '<hr>'
-			+ '<p id="copyleft">Copyleft - 2012</p>'
+			+ '<p id="copyleft">Copyleft 2015</p>'
 			+ '<div style="border-style: inset; background-color: white;">'
-			+ 'Deleket (Jojo Mendoza) http://www.deleket.com'
 			+ '</div>';
 		
 		return element;
@@ -252,16 +256,15 @@ var app_cirrus = {
 		return menu;
 	},
 	sauvParam : function(){
-		var style = getComputedStyle( app_cirrus.browser );
-		p = {
+		var style = getComputedStyle( app_cirrus.browser ),
+			p = {
 				x : style.getPropertyValue("left"),
 				y : style.getPropertyValue("top"),
 				width : style.getPropertyValue("width"),
 				height : style.getPropertyValue("height"),
-			};
-		strJson = JSON.stringify(p);
-
-		var oXHR = new XMLHttpRequest();
+			},
+			strJson = JSON.stringify(p),
+			oXHR = new XMLHttpRequest();
 
 		oXHR.open("POST", "./php/sauvParam.php");  
 		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  

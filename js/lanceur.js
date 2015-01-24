@@ -19,14 +19,14 @@ function lanceApp(nomApp){
 		browser();
 		break;
 		
-	 case 'app_edit' :
+/*	 case 'app_edit' :
 		edit();
 		break;
 
 	 case 'app_postit' :
 		app_postit.ajoutPostIt();
 		break;
-
+*/
 	 case 'app_test' :
 		test();
 		break;
@@ -58,7 +58,7 @@ function browser(){
 	changePath('~');
 	
 }
-
+/*
 function edit(){
 	var divEdit = document.createElement("div");
 	
@@ -80,23 +80,24 @@ function edit(){
 
 	return document.getElementById("workSpace").appendChild( menu );
 }
-
+*/
 function test(){
 	var f = domFenetre("Upload");
 
 	document.getElementById("workSpace").appendChild( f );
 
-		var uploader = new qq.FileUploader({
-			element: f.querySelector(".contenuFenetre"),
-			action: './php/deskUpload.php?rep=',
-			onComplete: function(id, fileName, responseJSON){
-				if(responseJSON.success) {
-					app_cirrus.listFicBureau();
-					app_cirrus.iconFichier(fileName);
-				} else {
-					alert(fileName);
-				}
-			},
-		});           
+	var uploader = new qq.FileUploader({
+		element: f.querySelector(".contenuFenetre"),
+		action: './php/deskUpload.php?rep=',
+		onComplete: function(id, fileName, responseJSON){
+			if(responseJSON.success) {
+				app_cirrus.listFicBureau();
+				app_cirrus.iconFichier(fileName);
+			} else {
+				alert(fileName);
+			}
+		},
+	});
+	
 	return f;
 }

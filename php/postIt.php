@@ -33,6 +33,7 @@ if($reponse["success"]) {
 			$reponse["success"] = false;
 		}
 	}
+	$reponse["pathPostit"] = "../Disk/Users/$homeDir/.postIt.txt";
 }
 
 header('Content-type: application/json');
