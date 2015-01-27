@@ -68,7 +68,7 @@ var app_cirrus = {
 			break;
 			
 			case 'txt' :
-				app_edit.open( chemin + nomFichier );
+				app_edit.load( figure.querySelector("input[type='hidden']").value + "/" + nomFichier, contenuFenetre );
 			break;
 			
 			case 'wav' :

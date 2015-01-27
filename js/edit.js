@@ -1,24 +1,37 @@
- var app_edit = {
-	// Création d'un post-it
+ /**
+ * edit.js
+ * 
+ * @auteur     marc laville
+ * @Copyleft 2015
+ * @date       27/01/2015
+ * @version    0.1
+ * @revision   $0$
+ *
+ * module app_edit
+ * Affichage et modification des fichiers txt
+ *
+ *
+ * Licensed under the GPL license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ */
+var app_edit = {
 	quitter : function(){
 		alert("exit");
 	},
 	load( path, out ){
+	//--- Chargement d'un fichier texte
 		var oXHR = new XMLHttpRequest();
 
-		alert(path);
 		oXHR.onreadystatechange=function() {
-			var outer = out;
-		
+
 			if (oXHR.readyState==4 && oXHR.status==200) {
-				outer.textContent = oXHR.responseText;
+				out.innerHTML = oXHR.responseText;
 			}
 			
 			return false;
 		}
 
-		oXHR.open("GET", path);  
-//		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
+		oXHR.open('GET', './services/loadFile?path=' + path);  
 		oXHR.send( );
 	},
 	open : function( path ){
@@ -33,15 +46,8 @@
 		
 		menu.appendChild( domItemMenu('Fichier', 'rd_fichier', this.quitter) );
 		menu.appendChild( domItemMenu('Quitter', 'rd_quitter', this.quitter) );
-/*
-		['Fichier', 'Quitter'].forEach(function(item) { 
-			menu.appendChild( document.createElement("li") )
-				.appendChild( document.createTextNode(item) );
-		});
-*/
-		if( path  != null ) {
-		
-			alert('path : ' + path );
+
+		if( path != null ) {
 			this.load( path, divEdit )
 		} else {
 			divEdit.innerHTML = 'Hello Word !';

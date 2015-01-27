@@ -4,10 +4,10 @@
  * @auteur     marc laville
  * @Copyleft 2012
  * @date       23/01/1012
- * @version    0.01
+ * @version    0.05
  * @revision   $0$
  *
- * A faire : ecrire une fonction generique de création de fenetre
+ * @date   revision   marc laville  27/01/2015 ne gere plus les acces aux post-its et .txt
  * 
  */
 
@@ -58,29 +58,7 @@ function browser(){
 	changePath('~');
 	
 }
-/*
-function edit(){
-	var divEdit = document.createElement("div");
-	
-	divEdit.innerHTML = 'Hello Word !';
-	divEdit.className = "edit";
-	divEdit.contentEditable = "true";
 
-	document.getElementById("workSpace").appendChild( domFenetre("Edit", divEdit) );
-	
-	menu = domMenu("Edit");
-	
-	menu.appendChild( domItemMenu('Fichier', 'rd_fichier', 'menu_cirrus') );
-	menu.appendChild( domItemMenu('Quitter', 'rd_quitter', 'menu_cirrus') );
-
-	['Fichier', 'Quitter'].forEach(function(item) { 
-		menu.appendChild( document.createElement("li") )
-			.appendChild( document.createTextNode(item) );
-	});
-
-	return document.getElementById("workSpace").appendChild( menu );
-}
-*/
 function test(){
 	var f = domFenetre("Upload");
 
