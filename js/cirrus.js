@@ -68,7 +68,7 @@ var app_cirrus = {
 			break;
 			
 			case 'txt' :
-				app_edit.load( figure.querySelector("input[type='hidden']").value + "/" + nomFichier, contenuFenetre );
+				app_edit.load( figure.querySelector("input[type='hidden']").value + '/' + nomFichier, contenuFenetre );
 			break;
 			
 			case 'wav' :
@@ -151,6 +151,8 @@ var app_cirrus = {
 			app_cirrus.dblClickFile(this.nextSibling, isDir);
 		});
 		
+		li.dataset.chemin = tabPath.join('/');
+		
 		return li;
 	},
 	
@@ -190,9 +192,10 @@ var app_cirrus = {
 			});           
 		return f;
 	},
-
+	// Affichage de la fenêtre info
 	info : function(){
-		element = document.createElement("div");
+		var element = document.createElement("div");
+		
 		element.setAttribute('id', 'div_infoCirrus');
 		element.innerHTML = '<div class="cirrus">cirrus</div>'
 			+ '<h1>cirrus'
@@ -212,7 +215,9 @@ var app_cirrus = {
 		var divBrowser = document.createElement("div");
 
 		divBrowser.className = "corpsAppli";
-		$(divBrowser).append('<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>');
+		divBrowser.innerHTML = '<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>';
+
+//		$(divBrowser).append('<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>');
 		
 		app_cirrus.browser = document.getElementById("workSpace").appendChild( domFenetre("Fichiers", divBrowser) );
 

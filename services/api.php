@@ -41,7 +41,7 @@ class API extends REST {
 			$this->response('',406);
 		}
 
-		$str=file_get_contents( $this->path_root . $_GET['path'] );
+		$str=file_get_contents( $this->path_root . ltrim ( $_GET['path'], '/' ) );
 		$this->_content_type = "text/plain;charset=UTF-8";
 
  		$this->response( nl2br($str), 200 );

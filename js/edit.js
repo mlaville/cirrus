@@ -20,12 +20,18 @@ var app_edit = {
 	},
 	load( path, out ){
 	//--- Chargement d'un fichier texte
-		var oXHR = new XMLHttpRequest();
+		var oXHR = new XMLHttpRequest(),
+			divEdit = document.createElement("div");
+		
+		divEdit.className = "edit";
+		divEdit.contentEditable = "true";
+		
+		out.appendChild( divEdit );
 
 		oXHR.onreadystatechange=function() {
 
 			if (oXHR.readyState==4 && oXHR.status==200) {
-				out.innerHTML = oXHR.responseText;
+				divEdit.innerHTML = oXHR.responseText;
 			}
 			
 			return false;

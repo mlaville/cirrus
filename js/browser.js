@@ -2,19 +2,20 @@
  * browser.js
  * 
  * @auteur     marc laville
- * @Copyleft 2012
+ * @Copyleft 2012-2015
  * @date       28/02/1012
- * @version    0.01
+ * @version    0.1
  * @revision   $0$
  *
  * @date   revision   marc laville  09/04/2012 chargement des fichiers depuis la liste path
  * @date   revision   marc laville  30/04/2012 gestion du drop sur les repertoires du path
+ * @date   revision   marc laville  29/01/2015 r√©√©criture pure javascript
  * 
  * A faire : 
- * - rÈÈcriture pure javascript
+ * - r√©√©criture pure selon module pattern
  * - instanciation propre des noeuds dom
- * - drag sur l'ÈtagËre
- * drop dans un rÈpertoire du path 
+ * - drag sur l'√©tag√®re
+ * drop dans un r√©pertoire du path 
  * 
  * Browser
  */
@@ -41,7 +42,7 @@ function move(element, dest) {
 				element.parentElement.removeChild(element);
 				changePath(resp.dest);
 			} else {
-				// gerer l'erreur de dÈplacement
+				// gerer l'erreur de d√©placement
 			}
 		}
 		
@@ -85,7 +86,7 @@ function rename(element) {
 					changePath(resp.dest);
 				}
 			} else {
-				// gerer l'erreur de dÈplacement
+				// gerer l'erreur de d√©placement
 			}
 		}
 		
@@ -118,7 +119,7 @@ function nouveauDossier( ) {
 			if(resp.success) {
 				changePath(resp.dest, true);
 			} else {
-				// gerer l'erreur de crÈation de dossier
+				// gerer l'erreur de cr√©ation de dossier
 			}
 		}
 		
@@ -132,66 +133,74 @@ function nouveauDossier( ) {
 }
 
 function arrayToBrowser( tabFichier, titre, tabPath, ulPath, chemin ){
-	var colPlus = null; 
-	var items = new Array();
-	var itemSelect = tabPath.shift();
+	var colPlus = null,
+		items = new Array(),
+		itemSelect = tabPath.shift(),
+		ulColFic = '<li><div>' + titre + '</div><ul>',
+		addToPath = function( nomFic, isDir ) {
+			var noeudPrecedent = ulPath.lastChild,
+				pathFile = (noeudPrecedent) ? noeudPrecedent.dataset.chemin + '/' + noeudPrecedent.querySelector('figcaption p').textContent : '';
 
-	if (chemin==undefined)
-		chemin = '';
-	else
-		chemin += (titre + '/');
+			return ulPath.appendChild( app_cirrus.iconFichier( pathFile + '/' + nomFic, isDir ) );
+		},
+		traiteFic = function( fic, isDir ) {
+			var arrClass = new Array(),
+				balise = "<li";
+
+			if(fic.isDir == false) { // Affichage du fichier en fin de liste
+				if(fic.nom == itemSelect) {
+					arrClass.push('sel');
+//					ulPath.appendChild( app_cirrus.iconFichier( chemin + '/' + titre + '/' + itemSelect ) );
+					addToPath( itemSelect );
+				}
 				
-	$.each(tabFichier, function(key, fic) {
-		var arrClass = new Array();
-		
-		if(fic.isDir == false) { // Affichage du fichier en fin de liste
-			if(fic.nom == itemSelect) {
-				arrClass.push('sel');
-				ulPath.appendChild( app_cirrus.iconFichier( chemin + '/' + itemSelect ) );
-			}
-			
-		} else { // Gestion des rÈpertoires en fin de liste
-				
-			arrClass.push('rep');
-			if( fic.rep !== null ) {
-				arrClass.push('sel');
-				li = ulPath.appendChild( app_cirrus.iconFichier(chemin + '/' + itemSelect, true) );
-				
-				/* Activation du dossier */
-				$(li).droppable({
-					tolerance: 'touch',
-					accept: "figure",
-					over: function(event, ui) { 
-						this.querySelector("img").setAttribute( "src", './css/images/docs/dossierOuvert.png' );
-					},
-					out: function(event, ui) { 
-						this.querySelector("img").setAttribute( "src", './css/images/docs/dossier.png' );
-					},
-//					hoverClass: "recycle",
-					drop: function( event, ui ) {
-						var path = "";
-						li = this.parentElement.firstElementChild;
-						while(li !== this){
-							path += (li.querySelector("figcaption").textContent + "/");
-							li = li.nextElementSibling;
+			} else { // Gestion des r√©pertoires en fin de liste
+					
+				arrClass.push('rep');
+				if( fic.rep !== null ) {
+					var li;
+
+					chemin = ( chemin || '' ) + titre + '/';
+					arrClass.push('sel');
+					
+//					li = ulPath.appendChild( app_cirrus.iconFichier(chemin + '/' + itemSelect, true) );
+					li = addToPath( itemSelect, true );
+					/* Activation du dossier */
+					$(li).droppable({
+						tolerance: 'touch',
+						accept: "figure",
+						over: function(event, ui) { 
+							this.querySelector("img").setAttribute( "src", './css/images/docs/dossierOuvert.png' );
+						},
+						out: function(event, ui) { 
+							this.querySelector("img").setAttribute( "src", './css/images/docs/dossier.png' );
+						},
+	//					hoverClass: "recycle",
+						drop: function( event, ui ) {
+							var path = "",
+								li = this.parentElement.firstElementChild;
+							while(li !== this){
+								path += (li.querySelector("figcaption").textContent + "/");
+								li = li.nextElementSibling;
+							}
+							path += this.querySelector("figcaption").textContent;
+							move(ui.draggable[0], path);
 						}
-						path += this.querySelector("figcaption").textContent;
-						move(ui.draggable[0], path);
-					}
-				});
-				
-				colPlus = arrayToBrowser(fic.rep, fic.nom, tabPath, ulPath, chemin);
+					});
+					
+					colPlus = arrayToBrowser(fic.rep, fic.nom, tabPath, ulPath, chemin);
+				}
 			}
-		}
-		balise = "<li";
-		if(arrClass.length) {
-			balise +=  ( ' class="' + arrClass.join(' ') + '"');
-		}
-		items.push( balise + ">" + fic.nom + '</li>');
-		
-	});
-	
-	var ulColFic = '<li><div>' + titre + '</div><ul>' + items.join('\n') + '\n</ul></li>';
+			if(arrClass.length) {
+				balise +=  ( ' class="' + arrClass.join(' ') + '"');
+			}
+			items.push( balise + ">" + fic.nom + '</li>');
+			
+		};
+
+	tabFichier.forEach( traiteFic );
+
+	ulColFic = ulColFic + items.join('\n') + '\n</ul></li>';
 	if(colPlus) {
 		ulColFic += colPlus;
 	}
@@ -206,31 +215,44 @@ function changePath(unPath, edit) {
 	$.getJSON('php/browser.php', 
 		{ path: unPath, root: true }, 
 		function(data) {
+			var ulPath = document.createElement("ul"),
+				browserLis, ulBrowser,
+				path = unPath.replace('~', app_cirrus.home).split("/"),
+				
+				/**
+				 * Reponse √† un click sur une ligne du browser
+				 */
+				liToPath = function(e) {
+					var arrPath = new Array( this.textContent ),
+						ul = this.parentNode,
+						li = ul.parentNode;
+
+					while(li) {
+						arrPath.unshift( li.querySelector("div").textContent );
+						li = li.previousSibling;
+					}
+					arrPath.shift();
+					changePath( arrPath.join("/") );
+				};
+			
 			// recalcul du path
 			if (viewPath.firstChild) {
 				viewPath.removeChild(viewPath.firstChild);
 			}			
-			var ulPath = viewPath.appendChild( document.createElement("ul") );
+			viewPath.appendChild(ulPath);
 			
 			browser = document.getElementById("browser");
 			if (browser.firstChild) {
 			  browser.removeChild(browser.firstChild);
 			}			
 			ulBrowser = browser.appendChild( document.createElement("ul") );
-			$(ulBrowser).append( arrayToBrowser(data.result, "/", unPath.replace('~', app_cirrus.home).split("/"), ulPath ) );
+			ulBrowser.innerHTML = arrayToBrowser( data.result, "/", path, ulPath );
 			
-			$('#browser ul ul li').click( function() {
-				var arrPath = new Array( $(this).text() );
-				ul = $(this).parent().get(0);
-				li = $(ul).parent().get(0);
-				while(li) {
-					div = $(li).children("div").get(0);
-					arrPath.unshift($(div).text());
-					li = $(li).prev().get(0);
-				}
-				arrPath.shift();
-				changePath( arrPath.join("/") );
-			});
+			browserLis = ulBrowser.querySelectorAll('li li');
+			for( var i = browserLis.length - 1 ; i >= 0 ; i-- ) {
+				browserLis[i].addEventListener( 'click', liToPath );
+			}
+			
 			if(edit) {
 				app_cirrus.saisieLibelle(viewPath.firstChild.lastChild.querySelector("input"));
 			}
