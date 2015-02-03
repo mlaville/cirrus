@@ -6,6 +6,13 @@
   height: 320px;
   position: absolute;
 }
+.fenetre input {
+  float : left;
+  width:1px;
+  position:absolute;
+ /* visibility:hidden;*/
+}
+
 .titreFenetre {
   background-color: transparent;
   padding-left: 24px;

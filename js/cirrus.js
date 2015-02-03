@@ -15,6 +15,7 @@
  *
  * @date   revision   marc laville  29/03/2012 : Gestion des upload
  * @date   revision   marc laville  30/04/2012 : Gestion des dossier ; renommage des fichiers
+ * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
  *
  * definition de l'app cirrus
  */
@@ -52,36 +53,40 @@ var app_cirrus = {
 	dblClickFile : function(figure) {
 		var chemin = "./Disk/" + figure.querySelector("input[type='hidden']").value + "/",
 			nomFichier = figure.querySelector("input").value,
-			contenuFenetre = document.getElementById("workSpace").appendChild( domFenetre(nomFichier) )
-								.querySelector(".contenuFenetre");
+			contenuFenetre = null;
 		
 		switch( nomFichier.split(".").pop().toLowerCase() ) {
 			case 'pdf' :
-				contenuFenetre.appendChild( objetPdf( chemin + nomFichier ) );
+				contenuFenetre = objetPdf( chemin + nomFichier );
 			break;
 					
 			case 'gif' : ;
 			case 'png' : ;
 			case 'jpg' :
-				contenuFenetre.appendChild( document.createElement("img") )
-					.setAttribute( "src", chemin + nomFichier );
+				contenuFenetre = document.createElement('img');
+				contenuFenetre.setAttribute( "src", chemin + nomFichier );
 			break;
 			
 			case 'txt' :
-				app_edit.load( figure.querySelector("input[type='hidden']").value + '/' + nomFichier, contenuFenetre );
+			case 'js' :
+			case 'php' :
+				app_edit.open( figure.querySelector("input[type='hidden']").value + '/' + nomFichier, document.createElement("div") );
 			break;
 			
 			case 'wav' :
-				var audio = contenuFenetre.appendChild( document.createElement("audio") );
-				
-				audio.setAttribute( "controls", "controls" );
-				source = audio.appendChild( document.createElement("source") );
+				contenuFenetre = document.createElement("audio");
+				contenuFenetre.setAttribute( "controls", "controls" );
+				source = contenuFenetre.appendChild( document.createElement("source") );
 				source.setAttribute( "type", "audio/wav" );
 				source.setAttribute( "src", chemin + nomFichier );
 			break;
 			
 			default:
 				alert( "Type de Fichier Inconnu");
+		};
+		
+		if( contenuFenetre != null ) {
+			winManager.domFenetre(nomFichier, contenuFenetre, 'cirrus');
 		}
 	},
 	/*
@@ -174,23 +179,21 @@ var app_cirrus = {
 	},
 
 	upload : function(){
-		var f = domFenetre("Upload");
-
-		document.getElementById("workSpace").appendChild( f );
-
-			var uploader = new qq.FileUploader({
-				element: f.querySelector(".contenuFenetre"),
+		var divUpload = document.createElement("div"),
+			uploader = new qq.FileUploader({
+				element: divUpload,
 				action: './php/deskUpload.php?rep=',
 				onComplete: function(id, fileName, responseJSON){
 					if(responseJSON.success) {
 						document.getElementById("bureau").appendChild( app_cirrus.iconFichier( app_cirrus.root + fileName ) );
-//						app_cirrus.iconFichier(fileName);
+	//						app_cirrus.iconFichier(fileName);
 					} else {
 						alert(fileName);
 					}
 				},
 			});           
-		return f;
+
+		return winManager.domFenetre('Upload', divUpload, 'edit' );
 	},
 	// Affichage de la fenêtre info
 	info : function(){
@@ -217,9 +220,7 @@ var app_cirrus = {
 		divBrowser.className = "corpsAppli";
 		divBrowser.innerHTML = '<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>';
 
-//		$(divBrowser).append('<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>');
-		
-		app_cirrus.browser = document.getElementById("workSpace").appendChild( domFenetre("Fichiers", divBrowser) );
+		app_cirrus.browser = winManager.domFenetre('Fichiers', divBrowser, 'cirrus');
 
 		changePath('~');
 	

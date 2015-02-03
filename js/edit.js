@@ -10,11 +10,18 @@
  * module app_edit
  * Affichage et modification des fichiers txt
  *
+ * @date   revision   marc laville  02/02/2015 trame de la methode sauve
+ * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
  *
  * Licensed under the GPL license:
  *   http://www.opensource.org/licenses/mit-license.php
  */
+ 
+ /*
+ http://codepen.io/polinux/pen/Bywjeq
+ */
 var app_edit = {
+	arrWindows : [],
 	quitter : function(){
 		alert("exit");
 	},
@@ -22,6 +29,7 @@ var app_edit = {
 	//--- Chargement d'un fichier texte
 		var oXHR = new XMLHttpRequest(),
 			divEdit = document.createElement("div");
+			
 		
 		divEdit.className = "edit";
 		divEdit.contentEditable = "true";
@@ -37,20 +45,33 @@ var app_edit = {
 			return false;
 		}
 
-		oXHR.open('GET', './services/loadFile?path=' + path);  
+		oXHR.open('GET', './services/loadFile?path=' + path);
+		oXHR.send( );
+	},
+	sauve : function( path, texte ){
+		var oXHR = new XMLHttpRequest();
+
+		oXHR.open('POST', './services/loadFile?path=' + path);
 		oXHR.send( );
 	},
 	open : function( path ){
 		var divEdit = document.createElement("div");
+			menu = domMenu("Edit");
+			itemFichier = menu.appendChild( domItemMenu( 'Fichier', 'menu_fichier', function(){} ) )
+			menuFichier = domMenu("Fichier");
 		
+		menuFichier.appendChild( domItemMenu('nouveau', 'menu_nouveau', function(){ }) );
+		menuFichier.appendChild( domItemMenu('sauver', 'menu_sauver', function(){ }) );
 		divEdit.className = "edit";
 		divEdit.contentEditable = "true";
 
-		document.getElementById("workSpace").appendChild( domFenetre('Edit - ' + ( path || 'Nouveau document' ), divEdit) );
+//		this.arrWindows.push( document.getElementById("workSpace").appendChild( domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), divEdit ) ) );
+		this.arrWindows.push( winManager.domFenetre('Edit - ' + ( path || 'Nouveau document' ), divEdit, 'edit' ) );
 		
-		menu = domMenu("Edit");
-		
-		menu.appendChild( domItemMenu('Fichier', 'rd_fichier', this.quitter) );
+		itemFichier.querySelector("label").classList.add("sous-menu");
+		itemFichier.appendChild(menuFichier);
+
+//		menu.appendChild( domItemMenu('Fichier', 'rd_fichier', this.quitter) );
 		menu.appendChild( domItemMenu('Quitter', 'rd_quitter', this.quitter) );
 
 		if( path != null ) {
