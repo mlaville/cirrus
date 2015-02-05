@@ -36,6 +36,13 @@ class API extends REST {
 		else
 			$this->response('',404); // If the method not exist with in this class "Page not found".
 	}
+	private function saveFile() {
+		if($this->get_request_method() != "POST"){
+			$this->response('',406);
+		}
+		if(file_put_contents( $this->path_root . ltrim ( $_POST['path'], '/' ) ) ){
+		};
+	}
 	private function loadFile() {
 		if($this->get_request_method() != "GET"){
 			$this->response('',406);

@@ -44,6 +44,7 @@ hr {
 	width: 136px;
 	border-radius: 8px;
 	margin: auto;
+  text-align:center;
 }
 #ul_listLog {
 	list-style: none outside none;
@@ -164,25 +165,26 @@ button:hover {
 	display:none;
 }
 #btn_connect_win {
-	border-style: none;
-	color: white;
-	font-family: Berlin Sans FB;
-	font-size: 2.1em;
-	letter-spacing: -11px;
-	line-height: 0.5em;
-	padding: 2px 12px 8px 2px;
-	cursor:pointer;
-	background: -moz-linear-gradient(center top , #E4F3FB 0%, #8ECDEC 48%, #3F84B3 51%, #80E7FB 100%) repeat scroll 0 0 transparent;
-	border-radius: 36px 36px 36px 36px;
-	box-shadow: 0 1px 2px #18384A, 0 -1px 2px #4F97BB;
+  background: linear-gradient(to bottom, #e4f3fb 0%, #8ecdec 48%, #3f84b3 51%, #80e7fb 100%);
+  border-radius: 50%;
+  border-style: none;
+  box-shadow: 0 1px 2px #18384a, 0 -1px 2px #4f97bb;
+  color: white;
+  cursor: pointer;
+  font-family: Lucida Console;
+  font-weight: bold;
+  font-size: 2.6em;
+  letter-spacing: -12px;
+  line-height: .6em;
+  padding: 2px 12px 4px 2px;
 }
-
 #btn_annule, #btn_ok {
 	color: white;
+	font-size: 1.2em;
 	border: thin  solid #88b6ce;
 	padding: 4px 32px;
 	cursor:pointer;
-	background: -moz-linear-gradient(top, rgba(75,118,150,1) 0%, rgba(30,99,138,1) 48%, rgba(19,75,108,1) 52%, rgba(37,117,154,1) 100%); /* FF3.6+ */
+	background: linear-gradient(to bottom, rgba(75,118,150,1) 0%, rgba(30,99,138,1) 48%, rgba(19,75,108,1) 52%, rgba(37,117,154,1) 100%);
 	box-shadow: 1px 1px 2px #00304b, -1px -1px 2px #00304b;
 	border-radius: 3px;
 	margin: 16px;

@@ -20,9 +20,9 @@
  * definition de l'app cirrus
  */
 
-
 var app_cirrus = {
-	version : 0.1,
+	appName : 'cirrus',
+	version : '0.2.0',
 	root : 'Users/home/vava/-bureau/',
 //	home : './Disk/Users/home',
 	home : './Users/home',
@@ -37,7 +37,7 @@ var app_cirrus = {
 		dir : 'dir.png'
 	},
 	
-	objetPdf : function( url ){
+	objetPdf : function( url ) {
 		var objPdf = document.createElement("object");
 		
 		objPdf.setAttribute('data', url);
@@ -94,13 +94,10 @@ var app_cirrus = {
 	 */
 	saisieLibelle : function(input) {
 
-		input.disabled=false;
-		input.onchange = function(e){
-				rename(this);
-			};
-		input.addEventListener('blur', function(){
-				this.disabled = true;
-			});
+		input.disabled = false;
+		input.addEventListener('change', function(e){
+			rename(this);
+		});
 			
 		return input.focus();
 	},
@@ -118,14 +115,15 @@ var app_cirrus = {
 			img = figure.appendChild( document.createElement("img") ),
 			figcaption = figure.appendChild( document.createElement("figcaption") ),
 			input = figcaption.appendChild( document.createElement("input") ),
-			hidden = document.createElement("input");
+			hidden = document.createElement("input"),
+			disableThis = function(e){ this.disabled = true; return; }; // this est le champ input qui a recu l'evenement
 		
 		input.setAttribute( 'type', 'text');
 		input.setAttribute( 'disabled', "true" );
 		input.value = nomFichier;
+		input.addEventListener('blur', disableThis);
 		
 		figcaption.appendChild( document.createElement("p") ).textContent = nomFichier;
-//			.appendChild( document.createTextNode(nomFichier) );
 
 		hidden.setAttribute( 'type', 'hidden');
 		hidden.value = tabPath.join('/'); //chemin;
@@ -136,7 +134,7 @@ var app_cirrus = {
 		 * rend le champ input enable -> visible
 		 */
 		figcaption.addEventListener('dblclick', function(){
-			return app_cirrus.saisieLibelle(this.querySelector("input"));
+			return app_cirrus.saisieLibelle( this.querySelector("input") );
 		});		
 		
 		if (typeof isDir === 'undefined') { 
@@ -193,7 +191,7 @@ var app_cirrus = {
 				},
 			});           
 
-		return winManager.domFenetre('Upload', divUpload, 'edit' );
+		return winManager.domFenetre('Upload', divUpload, 'cirrus' );
 	},
 	// Affichage de la fenêtre info
 	info : function(){
@@ -231,15 +229,16 @@ var app_cirrus = {
 	/*
 	 * menu de l'application
 	 */
-	construitMenu : function(){
-		var menu = domMenu("Cirrus");
+	appMenu : function(){
+		var menu = domMenu("Cirrus"),
+			menuFichier = domMenu("Fichier");
 
 		menu.appendChild( domItemMenu('Info', 'menu_cirrus', function(){
-				document.getElementById("workSpace").appendChild( domFenetre("Info", app_cirrus.info()) );
+//				document.getElementById("workSpace").appendChild( domFenetre("Info", app_cirrus.info()) );
+				winManager.domFenetre('Info',  app_cirrus.info(), 'cirrus' )
 			})
 		);
 		
-		var menuFichier = domMenu("Fichier");
 		menuFichier.appendChild( domItemMenu('Upload', 'menu_fichier', function(){
 				app_cirrus.upload();
 			})
@@ -275,6 +274,26 @@ var app_cirrus = {
 		oXHR.open("POST", "./php/sauvParam.php");  
 		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
 		oXHR.send( "param=" + strJson );
+	},
+	liDock : function(){
+		var li = document.createElement("li"),
+			div = li.appendChild( document.createElement("div") );
+		
+		div.className = 'cirrus';
+		div.textContent = this.appName;
+
+		return li;
+	},
+	init : function( ul ){
+		var formRd = winManager.addListWindows( this.appName );
+		
+		formRd.appendChild( this.appMenu() );
+		/* Affichage du browser*/
+		formRd.appendChild( this.construitBrowser() );
+		
+		this.listFicBureau();
+
+		return ul.insertBefore(this.liDock(), ul.firstChild );
 	},
 	/*
 	 * quitte l'application

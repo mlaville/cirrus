@@ -9,7 +9,7 @@
  *
  * @date   revision   marc laville  21/02/2012 : secoue le panneau en cas d'erreur d'authentification (class "secoue")
  * @date   revision   marc laville  22/02/2012 : horloge
- * @date   revision   marc laville  18/01/2014 : Formalisation du codage
+ * @date   revision   marc laville  18/01/2015 : Formalisation du codage
  *
  * A faire
  * - extraire le login utilisateur
@@ -69,8 +69,7 @@ function deconnecte() {
 }
 
 function initApp () {
-	var divDock = document.getElementById('dock'),
-		ulDock = divDock.getElementsByTagName('ul')[0],
+	var ulDock = document.getElementById('dock').getElementsByTagName('ul')[0],
 		icons = $("#dock ul li");
 	
 	icons.dblclick(function(){
@@ -78,17 +77,17 @@ function initApp () {
 	});
 	
 	/* Affichage du menu cirrus */
-	document.getElementById("workSpace").appendChild( app_cirrus.construitMenu() );
+//	document.getElementById("workSpace").appendChild( app_cirrus.construitMenu() );
 
 	app_postit.init( ulDock );
 	app_edit.init( ulDock );
+	app_cirrus.init( ulDock );
 
 	horloge();
 	
-	app_cirrus.listFicBureau("");
+//	app_cirrus.listFicBureau("");
 	
-	/* Affichage du browser*/
-	document.getElementById("workSpace").appendChild( app_cirrus.construitBrowser() );
+//	document.getElementById("workSpace").appendChild( app_cirrus.construitBrowser() );
 	
 	window.onbeforeunload = function() {
 

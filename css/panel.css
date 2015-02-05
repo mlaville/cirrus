@@ -149,3 +149,12 @@ input[type="radio"] ~ menu {
 input[type="radio"]:checked ~ menu {
   display: inline;
 }
+
+form menu  {
+  display: none;
+  z-index:20;
+}
+/* Affiche le menu de l'application au premier plan */
+form:last-of-type>menu  {
+  display: block;
+}

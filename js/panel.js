@@ -11,13 +11,14 @@
  *
  * @date   revision   marc laville  03/02/2015 Gestion de la fenêtre active grace au bouton radio avant le titre de la fenêtre
  * @date   revision   marc laville  04/02/2015 Gestion de la fenetre principale ; ajout du contenaire
+ * @date   revision   marc laville  06/02/2015 Gere la mise au premier plan
  *
  * A faire : case de miniaturisation, plein ecran
  * 
  */
 var winManager = (function (document) {
 	var contenaire = document.getElementById("workSpace") || document.body,
-		listWindows = {},
+//		listWindows = {},
 		/**
 		 * Réponse à un click sur une fenêtre
 		 * On passe le form contenant la fenêtre (this) au premier plan
@@ -26,7 +27,18 @@ var winManager = (function (document) {
 		 * e.target.parentNode.parentNode : la fenêtre (div .fenetre)
 		 */
 		changeKeyWindows = function(e) {
-			this.parentNode.appendChild(this.parentNode.removeChild(this));
+		
+			var forms = this.parentNode.querySelectorAll('form'),
+				lastForm = forms[forms.length - 1];
+			
+			if(lastForm !== this) {
+				var fenetre = lastForm.lastChild,
+					label = fenetre.firstChild;
+				
+				label.firstChild.checked = false;
+				this.parentNode.appendChild( this.parentNode.removeChild(this) );
+			}
+			
 			return this.appendChild(this.removeChild(e.target.parentNode.parentNode));
 		},
 		/**
@@ -34,22 +46,27 @@ var winManager = (function (document) {
 		 * win : div.fenetre
 		 * nomApp : string le nom du formulaire associé
 		 */
+		addListWindows = function( nomApp ) {
+			var formRd = contenaire.appendChild( document.createElement("form") );
+			
+			formRd.setAttribute( 'name', nomApp );
+			formRd.addEventListener( "change", changeKeyWindows );
+			
+			return formRd;
+		},
 		addWindow = function( win, nomApp ) {
 			nomApp = nomApp || "_";
 			
-			if( listWindows[nomApp] == undefined ){
-				var formRd = contenaire.appendChild( document.createElement("form") );
-				formRd.setAttribute( 'name', nomApp );
-				formRd.addEventListener( "change", changeKeyWindows );
-				listWindows[nomApp] = [];
+			if( document.forms[nomApp] == undefined ){
+				addListWindows(nomApp);
 			}
 			
-			document.forms[nomApp].appendChild(win);
-			
-			return listWindows[nomApp].push(win);
+			return document.forms[nomApp].appendChild(win);
 		},
-		listDomFenetres = function ( nomApp ) {
-			return listWindows[nomApp];
+		keyWindow = function ( nomApp ) {
+			var formApp = document.forms[nomApp];
+			
+			return (formApp == null) ? formApp.querySelector('.fenetre:last-of-type') : null;
 		},
 		/**
 		 * Création d'une fenêtre
@@ -57,17 +74,12 @@ var winManager = (function (document) {
 		 */
 		createDomFenetre = function ( unTitre, unContenu, nomAppli, param, keepContentOnClose ) {
 			var divFenetre = document.createElement("div"),
-				labelRd = divFenetre.appendChild( document.createElement("label") )
+				labelRd = divFenetre.appendChild( document.createElement("label") ),
 				inputRd = labelRd.appendChild( document.createElement("input") ),
 				divTitre = labelRd.appendChild( document.createElement("div") ),
 				divClose = document.createElement("div"),
-	//			divClose = document.createElement("button"),
-				divContent = labelRd.appendChild( document.createElement("div") ),
-				evt = new MouseEvent("click", {
-					bubbles: true,
-					cancelable: true,
-					view: window,
-				});
+	//			btnClose = document.createElement("button"),
+				divContent = labelRd.appendChild( document.createElement("div") );
 
 			inputRd.setAttribute( 'type', 'radio' );
 			inputRd.setAttribute( 'name', nomAppli || '_' );
@@ -106,14 +118,16 @@ var winManager = (function (document) {
 			divFenetre.style.position = 'fixed';
 			
 			addWindow(divFenetre, nomAppli);
-			inputRd.dispatchEvent(evt);
+			// Provoque la mise au premier plan de la fenetre, en passant son radioBouton à checked
+			inputRd.dispatchEvent( new MouseEvent( "click", { bubbles: true, cancelable: true, view: window } ) );
 			
 			return divFenetre;
 		}
 
   return {
+	addListWindows : addListWindows,
 	domFenetre : createDomFenetre,
-	listeFenetres : listDomFenetres
+	keyWindow : keyWindow
   };
 }(window.document));
 

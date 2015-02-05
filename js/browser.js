@@ -9,7 +9,7 @@
  *
  * @date   revision   marc laville  09/04/2012 chargement des fichiers depuis la liste path
  * @date   revision   marc laville  30/04/2012 gestion du drop sur les repertoires du path
- * @date   revision   marc laville  29/01/2015 réécriture pure javascript
+ * @date   revision   marc laville  29/01/2015 réécriture pur javascript
  * 
  * A faire : 
  * - réécriture pure selon module pattern
