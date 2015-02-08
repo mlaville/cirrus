@@ -12,9 +12,11 @@
  *
  * @date   revision   marc laville  02/02/2015 trame de la methode sauve
  * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
+ * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
  *
  * A faire
  * - memoriser le focus (selection) lorsqu'il est perdu par le passage sur une autre fenetre
+ * - gerer le quit de l'appli
  *
  * Licensed under the GPL license:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -79,6 +81,25 @@ var app_edit = {
 		return this.arrWindows.push( winManager.domFenetre('Edit - ' + ( path || 'Nouveau document' ), divEdit, 'edit' ) );
 	},
 	appMenu : function(){
+		var menuApp = menuFactory.domMenu("Edit"),
+			itemFichier = menuFactory.domItemMenu( 'Fichier', 'edit', function(){} ),
+			menuFichier = menuFactory.domMenu("Fichier");
+			
+		menuFactory.addItem( menuApp, itemFichier );
+		
+		menuFactory.addItem( menuApp, menuFactory.domItemMenu(
+				'Quitter', 'edit', function(){
+				app_cirrus.quit();
+			})
+		);
+		
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Nouveau', 'fichier', function(){ alert('nouveau'); } ) );
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Sauver', 'fichier', function(){ alert('Sauver'); } ) );
+		menuFactory.addSubMenu(	menuFichier,  itemFichier);
+
+		return menuApp;
+	},
+	appMenuOld : function(){
 		var	menu = domMenu("Edit"),
 			itemFichier = menu.appendChild( domItemMenu( 'Fichier', 'menu_fichier', function(){app_edit.open( null );} ) ),
 			menuFichier = domMenu("Fichier");
@@ -110,5 +131,15 @@ var app_edit = {
 		formRd.appendChild( this.appMenu() );
 
 		return ul.appendChild( this.liDock() );
+	},
+	/*
+	 * quitte l'application
+	 */
+	quit : function(){
+		document.getElementById("workSpace").removeChild( app_cirrus.menu );
+				app_postit.sauvListPostIt();
+				app_cirrus.sauvParam();
+				deconnecte();
 	}
+	
 }

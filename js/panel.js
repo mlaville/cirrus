@@ -11,6 +11,7 @@
  *
  * @date   revision   marc laville  03/02/2015 Gestion de la fenêtre active grace au bouton radio avant le titre de la fenêtre
  * @date   revision   marc laville  04/02/2015 Gestion de la fenetre principale ; ajout du contenaire
+ * @date   revision   marc laville  08/02/2015 : menuFactory
  *
  * A faire : case de miniaturisation, plein ecran
  * 
@@ -31,9 +32,11 @@ var winManager = (function (document) {
 				lastForm = forms[forms.length - 1];
 			
 			if(lastForm !== this && lastForm.lastChild != undefined) {
-				var label = lastForm.lastChild.firstChild;
+				if( lastForm.lastChild != undefined ) {
+//				var label = lastForm.lastChild.firstChild;
 				
-				label.firstChild.checked = false;
+					lastForm.lastChild.firstChild.firstChild.checked = false;
+				}
 				this.parentNode.appendChild( this.parentNode.removeChild(this) );
 			}
 			
@@ -46,6 +49,12 @@ var winManager = (function (document) {
 			formRd.addEventListener( "change", changeKeyWindows );
 			
 			return formRd;
+		},
+		quitApp = function( nomApp ) {
+			var formApp = document.forms[nomApp];
+			if( formApp != undefined ){
+				formApp.parentNode.removeChild(formApp);
+			}
 		},
 		/**
 		 * Ajout d'une fenêtre
@@ -82,12 +91,7 @@ var winManager = (function (document) {
 				divTitre = labelRd.appendChild( document.createElement("div") ),
 				divClose = document.createElement("div"),
 	//			divClose = document.createElement("button"),
-				divContent = labelRd.appendChild( document.createElement("div") ),
-				evt = new MouseEvent("click", {
-					bubbles: true,
-					cancelable: true,
-					view: window,
-				});
+				divContent = labelRd.appendChild( document.createElement("div") );
 
 			inputRd.setAttribute( 'type', 'radio' );
 			inputRd.setAttribute( 'name', nomAppli || '_' );
@@ -107,9 +111,9 @@ var winManager = (function (document) {
 			divClose.addEventListener("click", function() {
 			
 					if( (keepContentOnClose || false) == true ) {
-					} else {
 						unContenu.style.display = 'none';
 						divFenetre.parentNode.appendChild(unContenu);
+					} else {
 					}
 					return divFenetre.parentNode.removeChild(divFenetre);
 					
@@ -126,7 +130,7 @@ var winManager = (function (document) {
 			divFenetre.style.position = 'fixed';
 			
 			addWindow(divFenetre, nomAppli);
-			inputRd.dispatchEvent(evt);
+			inputRd.dispatchEvent( new MouseEvent( "click", { bubbles: true, cancelable: true, view: window } ) );
 			
 			return divFenetre;
 		}
@@ -135,6 +139,7 @@ var winManager = (function (document) {
 	domFenetre : createDomFenetre,
 	// listeFenetres : listDomFenetres,
 	addListWindows : addListWindows,
+	quitApp:quitApp,
 	keyWindow : keyWindow
   };
 }(window.document));

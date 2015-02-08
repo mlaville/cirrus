@@ -16,7 +16,8 @@
  * @date   revision   marc laville  29/03/2012 : Gestion des upload
  * @date   revision   marc laville  30/04/2012 : Gestion des dossier ; renommage des fichiers
  * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
- *
+  * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
+*
  * definition de l'app cirrus
  */
 
@@ -220,20 +221,20 @@ var app_cirrus = {
 	 * menu de l'application
 	 */
 	appMenu : function(){
-		var menu = menuFactory.domMenu("Cirrus"),
-			itemFichier = menuFactory.domItemMenu( 'Fichier', 'menu_cirrus', function(){} ),
+		var menuApp = menuFactory.domMenu("Cirrus"),
+			itemFichier = menuFactory.domItemMenu( 'Fichier', 'cirrus', function(){} ),
 			menuFichier = menuFactory.domMenu("Fichier");
 			
-		menuFactory.addItem( menu, menuFactory.domItemMenu(
+		menuFactory.addItem( menuApp, menuFactory.domItemMenu(
 			'Info', 'cirrus',
 			function(){
 				winManager.domFenetre('Info', app_cirrus.info(), 'cirrus' );
 			})
 		);
 		
-		menuFactory.addItem( menu, itemFichier );
+		menuFactory.addItem( menuApp, itemFichier );
 		
-		menuFactory.addItem( menu, menuFactory.domItemMenu(
+		menuFactory.addItem( menuApp, menuFactory.domItemMenu(
 				'Quitter', 'cirrus', function(){
 				app_cirrus.quit();
 			})
@@ -241,21 +242,22 @@ var app_cirrus = {
 		
 		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
 			'Upload', 'fichier',
-			function(){ app_cirrus.upload(); })
+//			function(){ app_cirrus.upload(); }
+			this.upload
+			)
 		);
 		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
-			'Nouveau Dossier', 'menu_fichier', function(){
+			'Nouveau Dossier', 'fichier', function(){
 				nouveauDossier();
 			})
 		);
 		
 		menuFactory.addSubMenu(	menuFichier,  itemFichier);
 
-		return menu;
+		return menuApp;
 	},
 	/*
 	 * menu de l'application
-	 */
 	appMenuOld : function(){
 		var menu = domMenu("Cirrus"),
 			menuFichier = domMenu("Fichier");
@@ -286,7 +288,8 @@ var app_cirrus = {
 		app_cirrus.menu = menu;
 		
 		return menu;
-	},
+	},	 */
+
 	sauvParam : function(){
 		var style = getComputedStyle( app_cirrus.browser ),
 			p = {
@@ -301,6 +304,9 @@ var app_cirrus = {
 		oXHR.open("POST", "./php/sauvParam.php");  
 		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
 		oXHR.send( "param=" + strJson );
+	},
+	makeFront : function(){
+		
 	},
 	liDock : function(){
 		var li = document.createElement("li"),
