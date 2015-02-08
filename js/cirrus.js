@@ -7,10 +7,10 @@
  * @version    0.02
  * @revision   $1$
  *
- * A faire : réécriture pure javascript
+ * A faire : rÃ©Ã©criture pure javascript
  * calcul du chemin root
- * affichage des répertoires
- * sauvegarde du positionnement des icônes sur le bureau
+ * affichage des rÃ©pertoires
+ * sauvegarde du positionnement des icÃ´nes sur le bureau
  * lanceur pour fichier video
  *
  * @date   revision   marc laville  29/03/2012 : Gestion des upload
@@ -103,7 +103,7 @@ var app_cirrus = {
 	},
 
 	/*
-	 * Affichage d'un icône par document
+	 * Affichage d'un icÃ´ne par document
 	 *  renvoi un element li
 	 */
 	iconFichier : function(chemin, isDir){
@@ -130,7 +130,7 @@ var app_cirrus = {
 		figcaption.appendChild( hidden );
 		
 		/*
-		 * Gestion du doubleClick sur le libellé
+		 * Gestion du doubleClick sur le libellÃ©
 		 * rend le champ input enable -> visible
 		 */
 		figcaption.addEventListener('dblclick', function(){
@@ -160,20 +160,12 @@ var app_cirrus = {
 	},
 	
 	/*
-	 * Charge le répertoire du bureau pour afficher les icones
+	 * Charge le rÃ©pertoire du bureau pour afficher les icones
 	 */
-	listFicBureau : function( ){
-		$.getJSON('php/browser.php', 
-			{ path: "~/-bureau" }, 
-			function(data) {
-				arrayFic = data.result;
-				data.result.forEach(function( item, index, array ){
-				   document.getElementById("bureau").appendChild( app_cirrus.iconFichier( app_cirrus.root + item.nom ) );
-				});
-
-			}
-		);
-
+	listFicBureau : function( data ){
+		data.result.forEach(function( item, index, array ){
+		   document.getElementById("bureau").appendChild( app_cirrus.iconFichier( app_cirrus.root + item.nom ) );
+		});
 	},
 
 	upload : function(){
@@ -193,7 +185,7 @@ var app_cirrus = {
 
 		return winManager.domFenetre('Upload', divUpload, 'cirrus' );
 	},
-	// Affichage de la fenêtre info
+	// Affichage de la fenÃªtre info
 	info : function(){
 		var element = document.createElement("div");
 		
@@ -221,15 +213,50 @@ var app_cirrus = {
 		app_cirrus.browser = winManager.domFenetre('Fichiers', divBrowser, 'cirrus');
 
 		changePath('~');
-	
-//		app_cirrus.browser = divBrowser;
-		
+
 		return app_cirrus.browser;
 	},
 	/*
 	 * menu de l'application
 	 */
 	appMenu : function(){
+		var menu = menuFactory.domMenu("Cirrus"),
+			itemFichier = menuFactory.domItemMenu( 'Fichier', 'menu_cirrus', function(){} ),
+			menuFichier = menuFactory.domMenu("Fichier");
+			
+		menuFactory.addItem( menu, menuFactory.domItemMenu(
+			'Info', 'cirrus',
+			function(){
+				winManager.domFenetre('Info', app_cirrus.info(), 'cirrus' );
+			})
+		);
+		
+		menuFactory.addItem( menu, itemFichier );
+		
+		menuFactory.addItem( menu, menuFactory.domItemMenu(
+				'Quitter', 'cirrus', function(){
+				app_cirrus.quit();
+			})
+		);
+		
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
+			'Upload', 'fichier',
+			function(){ app_cirrus.upload(); })
+		);
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
+			'Nouveau Dossier', 'menu_fichier', function(){
+				nouveauDossier();
+			})
+		);
+		
+		menuFactory.addSubMenu(	menuFichier,  itemFichier);
+
+		return menu;
+	},
+	/*
+	 * menu de l'application
+	 */
+	appMenuOld : function(){
 		var menu = domMenu("Cirrus"),
 			menuFichier = domMenu("Fichier");
 
@@ -288,10 +315,14 @@ var app_cirrus = {
 		var formRd = winManager.addListWindows( this.appName );
 		
 		formRd.appendChild( this.appMenu() );
-		/* Affichage du browser*/
-		formRd.appendChild( this.construitBrowser() );
 		
-		this.listFicBureau();
+		/* Affichage du browser*/
+		this.construitBrowser();
+		
+	/*
+	 * Charge le rÃ©pertoire du bureau pour afficher les icones
+	 */
+		$.getJSON( 'php/browser.php',  { path: "~/-bureau" }, this.listFicBureau );
 
 		return ul.insertBefore(this.liDock(), ul.firstChild );
 	},

@@ -80,7 +80,7 @@ var app_edit = {
 	},
 	appMenu : function(){
 		var	menu = domMenu("Edit"),
-			itemFichier = menu.appendChild( domItemMenu( 'Fichier', 'menu_fichier', function(){} ) ),
+			itemFichier = menu.appendChild( domItemMenu( 'Fichier', 'menu_fichier', function(){app_edit.open( null );} ) ),
 			menuFichier = domMenu("Fichier");
 			
 		menuFichier.appendChild( domItemMenu('nouveau', 'menu_nouveau', function(){ }) );
@@ -91,7 +91,7 @@ var app_edit = {
 //		menu.appendChild( domItemMenu('Fichier', 'rd_fichier', this.quitter) );
 		menu.appendChild( domItemMenu('Quitter', 'rd_quitter', this.quitter) );
 
-		return document.getElementById("workSpace").appendChild( menu );
+		return menu;
 	},
 	liDock : function(){
 		var li = document.createElement("li"),

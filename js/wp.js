@@ -84,11 +84,7 @@ function initApp () {
 	app_cirrus.init( ulDock );
 
 	horloge();
-	
-//	app_cirrus.listFicBureau("");
-	
-//	document.getElementById("workSpace").appendChild( app_cirrus.construitBrowser() );
-	
+
 	window.onbeforeunload = function() {
 
 		if( document.getElementById("workSpace").style.display != "none" ) {

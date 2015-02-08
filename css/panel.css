@@ -158,3 +158,95 @@ form menu  {
 form:last-of-type>menu  {
   display: block;
 }
+
+
+/***/
+nav {
+  background-color: black;
+  color: white;
+  font-family: Arial,Helvetica,sans-serif;
+  list-style-type: none;
+  padding: 0;
+  position: absolute;
+  width: 120px;
+}
+
+nav div {
+  border-style: outset;
+  border-width: 2px;
+  cursor: move;
+  font-size: 13px;
+  margin: 0;
+}
+nav h4 {
+font-weight: bold;
+  border-style: outset;
+  border-width: 2px;
+  cursor: move;
+  font-size: 13px;
+    padding: 0 0 0 4px;
+
+  margin: 0;
+}
+nav ul {
+    list-style-type: none;
+	padding:0;
+	margin:0;
+}
+nav li {
+  border: 2px outset silver;
+  color: black;
+  font-size: 12px;
+  cursor: pointer;
+  padding-right: 12px;
+}
+nav li:hover {
+	border: 2px inset silver;
+}
+nav li label {
+  background-color: white;
+  white-space: nowrap;
+  display:block;
+  width:100%;
+  margin-right: 4px;
+}
+
+nav li label span {
+  background-color: silver;
+  padding-left: 4px;
+  padding-right: 8px;
+  width: 100%;
+  display: block;
+}
+
+label.sous-menu>span {
+  background-image: url("./img/puceRep.png");
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+nav input[type="radio"] {
+	display: none;
+}
+/* mécanique de selection des item */
+nav li label input ~ nav {
+  display: none;
+  margin-left: 116px;
+  margin-top: -20px;
+}
+nav input:checked ~ nav {
+	display: block;
+}
+nav input:checked ~ span {
+  background-color: white;
+}
+
+
+form nav  {
+  display: none;
+  z-index:20;
+}
+/* Affiche le menu de l'application au premier plan */
+form:last-of-type>nav  {
+  display: block;
+}
+
