@@ -13,6 +13,7 @@
  * @date   revision   marc laville  02/02/2015 trame de la methode sauve
  * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
  * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
+ * @date   revision   marc laville  10/02/2015 : Enregistrement du ficjier txt
  *
  * A faire
  * - memoriser le focus (selection) lorsqu'il est perdu par le passage sur une autre fenetre
@@ -64,64 +65,59 @@ var app_edit = {
 			return false;
 		}
 		oXHR.open("POST", "./services/saveFile");  
-		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
-		oXHR.send( "str=" + this.listPostIt() );
+		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		
+		return oXHR.send( 'path=' + path + '&str=' + texte );
+	},
+	sauveFrontDoc : function( e ){
+		var frontWindow = winManager.frontWindow( app_edit.appName );
+		
+		return app_edit.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML );
 	},
 	open : function( path ){
-		var divEdit = document.createElement("div");
+		var divEdit = document.createElement("div"),
+			winTxt = winManager.domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), divEdit, this.appName );
 		
 		divEdit.className = "edit";
 		divEdit.contentEditable = "true";
 
 		if( path != null ) {
 			this.load( path, divEdit )
+			winTxt.dataset.path = path;
 		} else {
 			divEdit.innerHTML = 'Hello Word !';
+			winTxt.dataset.path = 'Users/home/vava/-bureau/Nouveau document.txt';
 		}
-		return this.arrWindows.push( winManager.domFenetre('Edit - ' + ( path || 'Nouveau document' ), divEdit, 'edit' ) );
+		
+		return this.arrWindows.push( winTxt );
+	},
+	nouveauDoc : function( evt ){
+		var gereMenu = function( ) {
+			evt.target.checked = false;
+		}
+		app_edit.open( null );
+		window.setTimeout(gereMenu, 500);
 	},
 	appMenu : function(){
 		var menuApp = menuFactory.domMenu("Edit"),
-			itemFichier = menuFactory.domItemMenu( 'Fichier', 'edit', function(){} ),
+			itemFichier = menuFactory.domItemMenu( 'Fichier', 'edit' ),
 			menuFichier = menuFactory.domMenu("Fichier");
 			
 		menuFactory.addItem( menuApp, itemFichier );
+		menuFactory.addItem( menuApp, menuFactory.domItemMenu( 'Quitter', 'edit', this.quit ) );
 		
-		menuFactory.addItem( menuApp, menuFactory.domItemMenu(
-				'Quitter', 'edit', function(){
-				app_cirrus.quit();
-			})
-		);
-		
-		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Nouveau', 'fichier', function(){ alert('nouveau'); } ) );
-		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Sauver', 'fichier', function(){ alert('Sauver'); } ) );
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Nouveau', 'fichier', this.nouveauDoc ) );
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Sauver', 'fichier', this.sauveFrontDoc ) );
 		menuFactory.addSubMenu(	menuFichier,  itemFichier);
 
 		return menuApp;
-	},
-	appMenuOld : function(){
-		var	menu = domMenu("Edit"),
-			itemFichier = menu.appendChild( domItemMenu( 'Fichier', 'menu_fichier', function(){app_edit.open( null );} ) ),
-			menuFichier = domMenu("Fichier");
-			
-		menuFichier.appendChild( domItemMenu('nouveau', 'menu_nouveau', function(){ }) );
-		menuFichier.appendChild( domItemMenu('sauver', 'menu_sauver', function(){ }) );
-		itemFichier.querySelector("label").classList.add("sous-menu");
-		itemFichier.appendChild(menuFichier);
-
-//		menu.appendChild( domItemMenu('Fichier', 'rd_fichier', this.quitter) );
-		menu.appendChild( domItemMenu('Quitter', 'rd_quitter', this.quitter) );
-
-		return menu;
 	},
 	liDock : function(){
 		var li = document.createElement("li"),
 			img = li.appendChild( document.createElement("img") );
 		
 		img.setAttribute('src', './css/images/edit.png');
-		li.addEventListener( 'dblclick', function(e) {
-			app_edit.open( null );
-		});
+		li.addEventListener( 'dblclick', this.nouveauDoc );
 		
 		return li;
 	},
@@ -136,10 +132,10 @@ var app_edit = {
 	 * quitte l'application
 	 */
 	quit : function(){
-		document.getElementById("workSpace").removeChild( app_cirrus.menu );
-				app_postit.sauvListPostIt();
-				app_cirrus.sauvParam();
-				deconnecte();
+		/**
+		 * teste la sauvegarde des documents
+		 */
+		return;
 	}
 	
 }

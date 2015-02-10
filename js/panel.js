@@ -26,27 +26,33 @@ var winManager = (function (document) {
 		 * e.target : le input radio contenu dans la fenêtre
 		 * e.target.parentNode.parentNode : la fenêtre (div .fenetre)
 		 */
-		changeKeyWindows = function(e) {
-		
-			var forms = this.parentNode.querySelectorAll('form'),
-				lastForm = forms[forms.length - 1];
+		changeKeyWindows = function(e, formThis) {
+			var forms = formThis.parentNode.querySelectorAll('form'),
+				lastForm = forms[forms.length - 1],
+				inputRd = e.target,
+				win = formThis.removeChild(e.target.parentNode.parentNode);
 			
-			if(lastForm !== this && lastForm.lastChild != undefined) {
+			if(lastForm !== formThis && lastForm.lastChild != undefined) {
 				if( lastForm.lastChild != undefined ) {
 //				var label = lastForm.lastChild.firstChild;
 				
 					lastForm.lastChild.firstChild.firstChild.checked = false;
 				}
-				this.parentNode.appendChild( this.parentNode.removeChild(this) );
+				formThis.parentNode.appendChild( formThis.parentNode.removeChild(formThis) );
 			}
 			
-			return this.appendChild(this.removeChild(e.target.parentNode.parentNode));
+			return formThis.appendChild(win);
+		},
+		clickWindow = function(e) {
+			var rd = e.target;
+			
+			return ( rd.classList.contains('rdFenetre') ) ? changeKeyWindows( e, this ) : null;
 		},
 		addListWindows = function( nomApp ) {
 			var formRd = contenaire.appendChild( document.createElement("form") );
 			
 			formRd.setAttribute( 'name', nomApp );
-			formRd.addEventListener( "change", changeKeyWindows );
+			formRd.addEventListener( "change", clickWindow );
 			
 			return formRd;
 		},
@@ -67,7 +73,7 @@ var winManager = (function (document) {
 			if( document.forms[nomApp] == undefined ){
 				var formRd = contenaire.appendChild( document.createElement("form") );
 				formRd.setAttribute( 'name', nomApp );
-				formRd.addEventListener( "change", changeKeyWindows );
+				formRd.addEventListener( "change", clickWindow );
 				// listWindows[nomApp] = [];
 			}
 			
@@ -75,10 +81,10 @@ var winManager = (function (document) {
 			
 //			return listWindows[nomApp].push(win);
 		},
-		keyWindow = function ( nomApp ) {
+		frontWindow = function ( nomApp ) {
 			var formApp = document.forms[nomApp];
 			
-			return (formApp == null) ? formApp.querySelector('.fenetre:last-of-type') : null;
+			return (formApp != null) ? formApp.querySelector('.fenetre:last-of-type') : null;
 		},
 		/**
 		 * Création d'une fenêtre
@@ -106,6 +112,7 @@ var winManager = (function (document) {
 			divTitre.className = "titreFenetre";
 			divClose.className = "closeFenetre";
 			divContent.className = "contenuFenetre";
+			inputRd.className = "rdFenetre";
 			
 			divClose.textContent = "X";
 			divClose.addEventListener("click", function() {
@@ -140,7 +147,7 @@ var winManager = (function (document) {
 	// listeFenetres : listDomFenetres,
 	addListWindows : addListWindows,
 	quitApp:quitApp,
-	keyWindow : keyWindow
+	frontWindow : frontWindow
   };
 }(window.document));
 
