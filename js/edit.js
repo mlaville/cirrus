@@ -53,12 +53,13 @@ var app_edit = {
 		oXHR.open('GET', './services/loadFile?path=' + path);
 		oXHR.send( );
 	},
-	sauve : function( path, texte ){
+	sauve : function( path, texte, target ){
 		var oXHR = new XMLHttpRequest();
 
 		oXHR.onreadystatechange=function() {
 
 			if (oXHR.readyState==4 && oXHR.status==200) {
+				target.checked=false;
 				alert( oXHR.responseText );
 			}
 			
@@ -69,11 +70,11 @@ var app_edit = {
 		
 		return oXHR.send( 'path=' + path + '&str=' + texte );
 	},
-	sauveFrontDoc : function( e ){
-		var frontWindow = winManager.frontWindow( app_edit.appName );
+//	sauveFrontDoc : function( e ){
+//		var frontWindow = winManager.frontWindow( app_edit.appName );
 		
-		return app_edit.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML );
-	},
+//		return app_edit.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML );
+//	},
 	open : function( path ){
 		var divEdit = document.createElement("div"),
 			winTxt = winManager.domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), divEdit, this.appName );
@@ -101,13 +102,20 @@ var app_edit = {
 	appMenu : function(){
 		var menuApp = menuFactory.domMenu("Edit"),
 			itemFichier = menuFactory.domItemMenu( 'Fichier', 'edit' ),
-			menuFichier = menuFactory.domMenu("Fichier");
+			menuFichier = menuFactory.domMenu("Fichier"),
+			sauveFrontDoc = function( app ) {
+				return function( e ) {
+				var frontWindow = winManager.frontWindow( app.appName );
+				
+				return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML, e.target );
+				}
+			};
 			
 		menuFactory.addItem( menuApp, itemFichier );
 		menuFactory.addItem( menuApp, menuFactory.domItemMenu( 'Quitter', 'edit', this.quit ) );
 		
 		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Nouveau', 'fichier', this.nouveauDoc ) );
-		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Sauver', 'fichier', this.sauveFrontDoc ) );
+		menuFactory.addItem( menuFichier, menuFactory.domItemMenu( 'Sauver', 'fichier', sauveFrontDoc( this) ) );
 		menuFactory.addSubMenu(	menuFichier,  itemFichier);
 
 		return menuApp;

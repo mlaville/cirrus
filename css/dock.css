@@ -16,7 +16,7 @@ body {
   right: 1px;
   left: 1px;
   background-color: white;
-  font-family: "Courier New",Courier,monospace;
+  font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
   font-size: 12px;
   overflow-y: auto;
 }

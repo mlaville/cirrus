@@ -241,9 +241,7 @@ var app_cirrus = {
 		);
 		
 		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
-			'Upload', 'fichier',
-//			function(){ app_cirrus.upload(); }
-			this.upload
+			'Upload', 'fichier', this.upload
 			)
 		);
 		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
@@ -256,39 +254,6 @@ var app_cirrus = {
 
 		return menuApp;
 	},
-	/*
-	 * menu de l'application
-	appMenuOld : function(){
-		var menu = domMenu("Cirrus"),
-			menuFichier = domMenu("Fichier");
-
-		menu.appendChild( domItemMenu('Info', 'menu_cirrus', function(){
-//				document.getElementById("workSpace").appendChild( domFenetre("Info", app_cirrus.info()) );
-				winManager.domFenetre('Info',  app_cirrus.info(), 'cirrus' )
-			})
-		);
-		
-		menuFichier.appendChild( domItemMenu('Upload', 'menu_fichier', function(){
-				app_cirrus.upload();
-			})
-		);
-		menuFichier.appendChild( domItemMenu( 'Nouveau Dossier', 'menu_fichier', function(){
-				nouveauDossier();
-			} )
-		);
-		
-		itemFichier = menu.appendChild( domItemMenu( 'Fichier', 'menu_cirrus', function(){} ) );
-		itemFichier.querySelector("label").classList.add("sous-menu");
-		itemFichier.appendChild(menuFichier);
-		
-		menu.appendChild( domItemMenu('Quitter', 'menu_cirrus', function(){
-				app_cirrus.quit();
-			})
-		);
-		app_cirrus.menu = menu;
-		
-		return menu;
-	},	 */
 
 	sauvParam : function(){
 		var style = getComputedStyle( app_cirrus.browser ),
@@ -336,9 +301,11 @@ var app_cirrus = {
 	 * quitte l'application
 	 */
 	quit : function(){
-		document.getElementById("workSpace").removeChild( app_cirrus.menu );
-				app_postit.sauvListPostIt();
-				app_cirrus.sauvParam();
-				deconnecte();
+		winManager.addListWindows( this.appName );
+		
+		app_postit.sauvListPostIt();
+		winManager.removeListWindows( this.appName );
+		this.sauvParam();
+		deconnecte();
 	}
 }

@@ -56,6 +56,11 @@ var winManager = (function (document) {
 			
 			return formRd;
 		},
+		removeListWindows = function(nomApp) {
+			var formApp = document.forms[nomApp];
+			
+			return ( formApp != undefined ) ? null : formApp.parentNode.removeChild(formApp)
+		},
 		quitApp = function( nomApp ) {
 			var formApp = document.forms[nomApp];
 			if( formApp != undefined ){
@@ -71,15 +76,13 @@ var winManager = (function (document) {
 			nomApp = nomApp || "_";
 			
 			if( document.forms[nomApp] == undefined ){
-				var formRd = contenaire.appendChild( document.createElement("form") );
-				formRd.setAttribute( 'name', nomApp );
-				formRd.addEventListener( "change", clickWindow );
-				// listWindows[nomApp] = [];
+				this.addListWindows( nomApp );
+//				var formRd = contenaire.appendChild( document.createElement("form") );
+//				formRd.setAttribute( 'name', nomApp );
+//				formRd.addEventListener( "change", clickWindow );
 			}
 			
 			return document.forms[nomApp].appendChild(win);
-			
-//			return listWindows[nomApp].push(win);
 		},
 		frontWindow = function ( nomApp ) {
 			var formApp = document.forms[nomApp];
@@ -146,6 +149,7 @@ var winManager = (function (document) {
 	domFenetre : createDomFenetre,
 	// listeFenetres : listDomFenetres,
 	addListWindows : addListWindows,
+	removeListWindows : removeListWindows,
 	quitApp:quitApp,
 	frontWindow : frontWindow
   };
