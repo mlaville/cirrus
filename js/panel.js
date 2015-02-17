@@ -72,14 +72,11 @@ var winManager = (function (document) {
 		 * win : div.fenetre
 		 * nomApp : string le nom du formulaire associé
 		 */
-		addWindow = function( win, nomApp ) {
+		addWindow = function( wn, win, nomApp ) {
 			nomApp = nomApp || "_";
 			
 			if( document.forms[nomApp] == undefined ){
-				this.addListWindows( nomApp );
-//				var formRd = contenaire.appendChild( document.createElement("form") );
-//				formRd.setAttribute( 'name', nomApp );
-//				formRd.addEventListener( "change", clickWindow );
+				wn.addListWindows( nomApp );
 			}
 			
 			return document.forms[nomApp].appendChild(win);
@@ -139,7 +136,7 @@ var winManager = (function (document) {
 			$(divFenetre).draggable({ handle: '.titreFenetre' });
 			divFenetre.style.position = 'fixed';
 			
-			addWindow(divFenetre, nomAppli);
+			addWindow( this, divFenetre, nomAppli);
 			inputRd.dispatchEvent( new MouseEvent( "click", { bubbles: true, cancelable: true, view: window } ) );
 			
 			return divFenetre;
@@ -216,7 +213,6 @@ var menuFactory = (function (document) {
 			
 			input.setAttribute( 'type', 'radio' );
 			input.setAttribute( 'name', 'menu_' + nomMenu );
-//			input.setAttribute( 'id', nomMenu + '-' + unTitre );
 			
 			span.textContent = unTitre;
 			

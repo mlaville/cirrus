@@ -236,6 +236,9 @@ nav li label input ~ nav {
 nav input:checked ~ nav {
 	display: block;
 }
+nav input ~ span {
+transition:background-color 2s;
+}
 nav input:checked ~ span {
   background-color: white;
 }
