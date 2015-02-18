@@ -78,16 +78,25 @@ var app_edit = {
 		var doc = new jsPDF(),
 			pos = { x:'5%', y:'120px', width:'880px', height: '420px' },
 			objPdf = document.createElement('object'),
-			margin = 0.5;
+			margin = 2.5,
+			verticalOffset = margin,
+			size = 12;
+;
 
-		doc.setFont("courier");
-		doc.text(20, 20, texte);
+//		doc.setFont("courier");
 
 		doc.setDrawColor(0, 255, 0)
 			.setLineWidth(1/72)
 			.line(margin, margin, margin, 11 - margin)
 			.line(8.5 - margin, margin, 8.5-margin, 11-margin)
 
+		lines = doc.setFont('Courier','')
+					.setFontSize(12)
+					.splitTextToSize(texte, 180);
+					
+		doc.text(2.5, verticalOffset + size / 72, lines)
+//		doc.text(20, 20, texte);
+		
 		objPdf.setAttribute('type', 'application/pdf');
 		objPdf.setAttribute('width', '100%');
 		objPdf.setAttribute('height', '100%');
@@ -116,7 +125,7 @@ var app_edit = {
 		var gereMenu = function( ) {
 			evt.target.checked = false;
 		}
-		this.open( null );
+		app_edit.open( null );
 		window.setTimeout(gereMenu, 500);
 	},
 	appMenu : function(){

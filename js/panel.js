@@ -32,10 +32,9 @@ var winManager = (function (document) {
 				inputRd = e.target,
 				win = formThis.removeChild(e.target.parentNode.parentNode);
 			
-			if(lastForm !== formThis && lastForm.lastChild != undefined) {
+//			if(lastForm !== formThis && lastForm.lastChild != undefined) {
+			if( lastForm !== formThis ) {
 				if( lastForm.lastChild != undefined ) {
-//				var label = lastForm.lastChild.firstChild;
-				
 					lastForm.lastChild.firstChild.firstChild.checked = false;
 				}
 				formThis.parentNode.appendChild( formThis.parentNode.removeChild(formThis) );
