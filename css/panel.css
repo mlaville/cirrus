@@ -1,3 +1,17 @@
+/**
+ * panel.css
+ * 
+ * @auteur     marc laville
+ * @Copyleft 2015
+ * @date       27/02/2015
+ * @version    0.10
+ * @revision   $0$
+ *
+ * regles de style des fenetre et menu
+ *
+ * A faire : case de miniaturisation, plein ecran
+ * 
+ */
 .fenetre {
   border-style: solid;
   border-width: 1px;
@@ -23,15 +37,19 @@
 	text-align: center;
 	cursor: move;
 	line-height: 1.6em;
-}
-.fenetre .titreFenetre:first-child,
-.fenetre input[type=radio]:checked+.titreFenetre{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+  }
+
+form:last-child .fenetre input[type=radio]:checked+.titreFenetre {
 	background-color: black;
 }
+/*
 .closeFenetre {
 	border: 1px outset #666666;
 	position: absolute;
-	right:2px;
+	right:24px;
 	width: 10px;
 	height: 10px;
 	margin: 2px;
@@ -46,7 +64,48 @@
 	background-color: #a9a9a9;
 	background-image: linear-gradient(left top, #ababab 5%, #A9A9A9 95%);
 	cursor: pointer;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
+*/
+button.close {
+  background-color: #a9a9a9;
+  border: 2px outset #666666;
+  color: #000;
+  cursor: pointer;
+  font-family: Verdana Ref,Helvetica,sans-serif;
+  font-weight: bold;
+  height: 1.3em;
+  width:1.3em;
+  line-height: 0.9em;
+  margin: 3px;
+  text-align: center;
+  position:relative;
+  float:right;
+}
+button.close::before {
+  content:'\2715';
+  display: block;
+  position: absolute;
+  font-size: 1.4em;
+  left: -.1em;
+  top: -.05em;
+}
+button:active {
+  border: 2px inset #666666;
+  left: .2em;
+  top: .2em;
+}
+button.dirty:after {
+  content:'\25CF';
+  color: #a9a9a9;
+  position:absolute;
+  top:.0em;
+  left:.0em;
+  font-size:1.4em;
+ }
+ 
 .basFenetre {
   border: 1px groove #999999;
   bottom: 1px;
@@ -80,7 +139,7 @@
 	bottom: 0px;
 	right: 0px;
 }
-
+/*
 menu {
   position: absolute;
   list-style-type: none;
@@ -154,12 +213,11 @@ form menu  {
   display: none;
   z-index:20;
 }
-/* Affiche le menu de l'application au premier plan */
 form:last-of-type>menu  {
   display: block;
 }
 
-
+*/
 /***/
 nav {
   background-color: black;
@@ -227,7 +285,7 @@ label.sous-menu>span {
 nav input[type="radio"] {
 	display: none;
 }
-/* mécanique de selection des item */
+/* mÃ©canique de selection des item */
 nav li label input ~ nav {
   display: none;
   margin-left: 116px;

@@ -301,10 +301,10 @@ var app_cirrus = {
 	 * quitte l'application
 	 */
 	quit : function(){
-		winManager.addListWindows( this.appName );
+//		winManager.addListWindows( this.appName );
 		
 		app_postit.sauvListPostIt();
-		winManager.removeListWindows( this.appName );
+		winManager.quitApp( this.appName );
 		this.sauvParam();
 		deconnecte();
 	}

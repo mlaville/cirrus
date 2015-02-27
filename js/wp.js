@@ -18,6 +18,54 @@
 /*
  * Gestion du login utilisateur
  */
+
+var loginManager = (function ( formLogin ) {
+	var	tabState = ["non initialisé", "connexion établie", "requête reçue", "réponse en cours", "terminé" ],
+		ctrlResponse = function(data) {
+		
+			return; 
+		},
+		connecte = function(e) {
+//	var formElement = document.getElementById("form_log"),
+		ctrlLogin = function(unForm) { return $(unForm).serialize(); },
+		data = ctrlLogin( formLogin );
+	
+		if( data != null ) {
+			var oXHR = new XMLHttpRequest(),
+				p_msg = document.getElementById("p_msgConnexion");
+			
+			formElement.parentNode.classList.remove("secoue");  
+			oXHR.onreadystatechange=function() {
+			
+				p_msg.innerHTML = tabState[oXHR.readyState] + " : " + oXHR.status;
+				
+				if( oXHR.readyState == 4 && oXHR.status == 200 ) {
+					var resp = JSON.parse(oXHR.responseText);
+					
+					p_msg.innerHTML = "";
+					if(resp.success) {
+						formElement.parentNode.style.display = "none";
+						document.getElementById("workSpace").style.display = "block";
+						initApp() 
+					} else {
+						// erreur d'authentification
+						formElement.parentNode.classList.add("secoue");  
+						document.getElementById("div_erreur").style.display = "block";
+						formElement.style.visibility = "hidden";
+					}
+				}
+				
+				return false;
+			}
+			oXHR.open("POST", "./php/login.php");  
+			oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
+			oXHR.send( data );
+		}
+		
+		return false;
+	}
+}(document.getElementById("form_log")));
+
 function connecte(e) {
 	var formElement = document.getElementById("form_log"),
 		ctrlLogin = function(unForm) { return $(unForm).serialize(); },
@@ -77,7 +125,6 @@ function initApp () {
 	});
 	
 	/* Affichage du menu cirrus */
-//	document.getElementById("workSpace").appendChild( app_cirrus.construitMenu() );
 
 	app_postit.init( ulDock );
 	app_edit.init( ulDock );

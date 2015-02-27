@@ -12,6 +12,7 @@
  * @date   revision   marc laville  03/02/2015 Gestion de la fenêtre active grace au bouton radio avant le titre de la fenêtre
  * @date   revision   marc laville  04/02/2015 Gestion de la fenetre principale ; ajout du contenaire
  * @date   revision   marc laville  08/02/2015 : menuFactory
+ * @date   revision   marc laville  27/02/2015 : btnClose remplace divClose
  *
  * A faire : case de miniaturisation, plein ecran
  * 
@@ -26,39 +27,27 @@ var winManager = (function (document) {
 		 * e.target : le input radio contenu dans la fenêtre
 		 * e.target.parentNode.parentNode : la fenêtre (div .fenetre)
 		 */
-		changeKeyWindows = function(e, formThis) {
-			var forms = formThis.parentNode.querySelectorAll('form'),
-				lastForm = forms[forms.length - 1],
-				inputRd = e.target,
-				win = formThis.removeChild(e.target.parentNode.parentNode);
+		changeKeyWindows = function(e) {
+		
+			var forms = this.parentNode.querySelectorAll('form'),
+				lastForm = forms[forms.length - 1];
 			
-//			if(lastForm !== formThis && lastForm.lastChild != undefined) {
-			if( lastForm !== formThis ) {
+			if(lastForm !== this && lastForm.lastChild != undefined) {
 				if( lastForm.lastChild != undefined ) {
 					lastForm.lastChild.firstChild.firstChild.checked = false;
 				}
-				formThis.parentNode.appendChild( formThis.parentNode.removeChild(formThis) );
+				this.parentNode.appendChild( this.parentNode.removeChild(this) );
 			}
 			
-			return formThis.appendChild(win);
-		},
-		clickWindow = function(e) {
-			var rd = e.target;
-			
-			return ( rd.classList.contains('rdFenetre') ) ? changeKeyWindows( e, this ) : null;
+			return this.appendChild(this.removeChild(e.target.parentNode.parentNode));
 		},
 		addListWindows = function( nomApp ) {
 			var formRd = contenaire.appendChild( document.createElement("form") );
 			
 			formRd.setAttribute( 'name', nomApp );
-			formRd.addEventListener( "change", clickWindow );
+			formRd.addEventListener( "change", changeKeyWindows );
 			
 			return formRd;
-		},
-		removeListWindows = function(nomApp) {
-			var formApp = document.forms[nomApp];
-			
-			return ( formApp != undefined ) ? null : formApp.parentNode.removeChild(formApp)
 		},
 		quitApp = function( nomApp ) {
 			var formApp = document.forms[nomApp];
@@ -71,19 +60,21 @@ var winManager = (function (document) {
 		 * win : div.fenetre
 		 * nomApp : string le nom du formulaire associé
 		 */
-		addWindow = function( wn, win, nomApp ) {
+		addWindow = function( win, nomApp ) {
 			nomApp = nomApp || "_";
 			
 			if( document.forms[nomApp] == undefined ){
-				wn.addListWindows( nomApp );
+				var formRd = contenaire.appendChild( document.createElement("form") );
+				formRd.setAttribute( 'name', nomApp );
+				formRd.addEventListener( "change", changeKeyWindows );
 			}
 			
 			return document.forms[nomApp].appendChild(win);
 		},
-		frontWindow = function ( nomApp ) {
+		keyWindow = function ( nomApp ) {
 			var formApp = document.forms[nomApp];
 			
-			return (formApp != null) ? formApp.querySelector('.fenetre:last-of-type') : null;
+			return (formApp == null) ? formApp.querySelector('.fenetre:last-of-type') : null;
 		},
 		/**
 		 * Création d'une fenêtre
@@ -94,9 +85,18 @@ var winManager = (function (document) {
 				labelRd = divFenetre.appendChild( document.createElement("label") )
 				inputRd = labelRd.appendChild( document.createElement("input") ),
 				divTitre = labelRd.appendChild( document.createElement("div") ),
-				divClose = document.createElement("div"),
-	//			divClose = document.createElement("button"),
-				divContent = labelRd.appendChild( document.createElement("div") );
+//				divClose = document.createElement("div"),
+				btnClose = document.createElement("button"),
+				divContent = labelRd.appendChild( document.createElement("div") ),
+				closeFenetre = function(e) {
+					e.preventDefault();
+					if( (keepContentOnClose || false) == true ) {
+						unContenu.style.display = 'none';
+						divFenetre.parentNode.appendChild(unContenu);
+					}
+					
+					return divFenetre.parentNode.removeChild(divFenetre);
+				};
 
 			inputRd.setAttribute( 'type', 'radio' );
 			inputRd.setAttribute( 'name', nomAppli || '_' );
@@ -109,24 +109,16 @@ var winManager = (function (document) {
 			}
 			divFenetre.className = "fenetre";
 			divTitre.className = "titreFenetre";
-			divClose.className = "closeFenetre";
+//			divClose.className = "closeFenetre";
+			btnClose.className = "close";
 			divContent.className = "contenuFenetre";
-			inputRd.className = "rdFenetre";
 			
-			divClose.textContent = "X";
-			divClose.addEventListener("click", function() {
+//			divClose.textContent = "X";
+//			divClose.addEventListener( "click", closeFenetre );
+			btnClose.addEventListener( "click", closeFenetre );
 			
-					if( (keepContentOnClose || false) == true ) {
-						unContenu.style.display = 'none';
-						divFenetre.parentNode.appendChild(unContenu);
-					} else {
-					}
-					return divFenetre.parentNode.removeChild(divFenetre);
-					
-				}, false
-			);
-			
-			divTitre.appendChild( divClose );
+//			divTitre.appendChild( divClose );
+			divTitre.appendChild( btnClose );
 			divTitre.appendChild( document.createTextNode(unTitre) );
 			if(unContenu) {
 				divContent.appendChild(unContenu);
@@ -135,7 +127,7 @@ var winManager = (function (document) {
 			$(divFenetre).draggable({ handle: '.titreFenetre' });
 			divFenetre.style.position = 'fixed';
 			
-			addWindow( this, divFenetre, nomAppli);
+			addWindow(divFenetre, nomAppli);
 			inputRd.dispatchEvent( new MouseEvent( "click", { bubbles: true, cancelable: true, view: window } ) );
 			
 			return divFenetre;
@@ -145,9 +137,8 @@ var winManager = (function (document) {
 	domFenetre : createDomFenetre,
 	// listeFenetres : listDomFenetres,
 	addListWindows : addListWindows,
-	removeListWindows : removeListWindows,
 	quitApp:quitApp,
-	frontWindow : frontWindow
+	keyWindow : keyWindow
   };
 }(window.document));
 
@@ -212,6 +203,7 @@ var menuFactory = (function (document) {
 			
 			input.setAttribute( 'type', 'radio' );
 			input.setAttribute( 'name', 'menu_' + nomMenu );
+//			input.setAttribute( 'id', nomMenu + '-' + unTitre );
 			
 			span.textContent = unTitre;
 			
