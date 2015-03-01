@@ -13,13 +13,15 @@
  * @date   revision   marc laville  04/02/2015 Gestion de la fenetre principale ; ajout du contenaire
  * @date   revision   marc laville  08/02/2015 : menuFactory
  * @date   revision   marc laville  27/02/2015 : btnClose remplace divClose
+ * @date   revision   marc laville  01/03/2015 : revise le mécanisme de mise au premier plan
  *
  * A faire : case de miniaturisation, plein ecran
  * 
  */
 var winManager = (function (document) {
 	var contenaire = document.getElementById("workSpace") || document.body,
-//		listWindows = {},
+		listDivWindows = {},
+		rdFrontWindows = null,
 		/**
 		 * Réponse à un click sur une fenêtre
 		 * On passe le form contenant la fenêtre (this) au premier plan
@@ -29,17 +31,20 @@ var winManager = (function (document) {
 		 */
 		changeKeyWindows = function(e) {
 		
-			var forms = this.parentNode.querySelectorAll('form'),
-				lastForm = forms[forms.length - 1];
+			var rd = e.target,
+				win = rd.parentNode.parentNode,
+				listWin = listDivWindows[ rd.getAttribute('name') ],
+				lastDiv = contenaire.lastChild;
 			
-			if(lastForm !== this && lastForm.lastChild != undefined) {
-				if( lastForm.lastChild != undefined ) {
-					lastForm.lastChild.firstChild.firstChild.checked = false;
-				}
-				this.parentNode.appendChild( this.parentNode.removeChild(this) );
+			if(lastDiv !== listWin ) {
+				contenaire.appendChild( contenaire.removeChild(listWin) );
 			}
+			if( rdFrontWindows != null ) {
+				rdFrontWindows.checked = false;
+			}
+			rdFrontWindows = rd;
 			
-			return this.appendChild(this.removeChild(e.target.parentNode.parentNode));
+			return listWin.appendChild( listWin.removeChild(win) );
 		},
 		addListWindows = function( nomApp ) {
 			var formRd = contenaire.appendChild( document.createElement("form") );
@@ -47,13 +52,17 @@ var winManager = (function (document) {
 			formRd.setAttribute( 'name', nomApp );
 			formRd.addEventListener( "change", changeKeyWindows );
 			
-			return formRd;
+			listDivWindows[ nomApp ] = contenaire.appendChild( document.createElement("section") );
+			
+			return listDivWindows[ nomApp ];
 		},
 		quitApp = function( nomApp ) {
 			var formApp = document.forms[nomApp];
 			if( formApp != undefined ){
 				formApp.parentNode.removeChild(formApp);
 			}
+			
+			return contenaire.removeChild( listDivWindows[ nomApp ] );
 		},
 		/**
 		 * Ajout d'une fenêtre
@@ -64,17 +73,16 @@ var winManager = (function (document) {
 			nomApp = nomApp || "_";
 			
 			if( document.forms[nomApp] == undefined ){
-				var formRd = contenaire.appendChild( document.createElement("form") );
-				formRd.setAttribute( 'name', nomApp );
-				formRd.addEventListener( "change", changeKeyWindows );
+				addListWindows( nomApp );
 			}
 			
-			return document.forms[nomApp].appendChild(win);
+			return listDivWindows[ nomApp ].appendChild(win);
 		},
-		keyWindow = function ( nomApp ) {
-			var formApp = document.forms[nomApp];
-			
-			return (formApp == null) ? formApp.querySelector('.fenetre:last-of-type') : null;
+		/**
+		 * Retourne la fenetre au premier plan 
+		 */
+		frontWindow = function ( nomApp ) {
+			return ( listDivWindows.hasOwnProperty(nomApp) ) ? listDivWindows[ nomApp ].querySelector('.fenetre:last-of-type') : null;
 		},
 		/**
 		 * Création d'une fenêtre
@@ -85,7 +93,6 @@ var winManager = (function (document) {
 				labelRd = divFenetre.appendChild( document.createElement("label") )
 				inputRd = labelRd.appendChild( document.createElement("input") ),
 				divTitre = labelRd.appendChild( document.createElement("div") ),
-//				divClose = document.createElement("div"),
 				btnClose = document.createElement("button"),
 				divContent = labelRd.appendChild( document.createElement("div") ),
 				closeFenetre = function(e) {
@@ -97,9 +104,11 @@ var winManager = (function (document) {
 					
 					return divFenetre.parentNode.removeChild(divFenetre);
 				};
-
+			nomAppli = nomAppli || '_';
 			inputRd.setAttribute( 'type', 'radio' );
-			inputRd.setAttribute( 'name', nomAppli || '_' );
+			inputRd.setAttribute( 'name', nomAppli );
+			inputRd.setAttribute( 'form', nomAppli );
+			inputRd.addEventListener( "change", changeKeyWindows );
 			
 			if( param != undefined ) {
 				divFenetre.style.left = param.x;
@@ -109,15 +118,11 @@ var winManager = (function (document) {
 			}
 			divFenetre.className = "fenetre";
 			divTitre.className = "titreFenetre";
-//			divClose.className = "closeFenetre";
 			btnClose.className = "close";
 			divContent.className = "contenuFenetre";
-			
-//			divClose.textContent = "X";
-//			divClose.addEventListener( "click", closeFenetre );
+
 			btnClose.addEventListener( "click", closeFenetre );
 			
-//			divTitre.appendChild( divClose );
 			divTitre.appendChild( btnClose );
 			divTitre.appendChild( document.createTextNode(unTitre) );
 			if(unContenu) {
@@ -138,7 +143,7 @@ var winManager = (function (document) {
 	// listeFenetres : listDomFenetres,
 	addListWindows : addListWindows,
 	quitApp:quitApp,
-	keyWindow : keyWindow
+	frontWindow : frontWindow
   };
 }(window.document));
 

@@ -42,33 +42,10 @@
 	user-select: none;
   }
 
-form:last-child .fenetre input[type=radio]:checked+.titreFenetre {
+section:last-child .fenetre input[type=radio]:checked+.titreFenetre {
 	background-color: black;
 }
-/*
-.closeFenetre {
-	border: 1px outset #666666;
-	position: absolute;
-	right:24px;
-	width: 10px;
-	height: 10px;
-	margin: 2px;
-	padding: 2px 3px 2px 1px;
-	color:#000;
-	text-align: center;
-	font-weight: bold;
-	font-family: Verdana Ref,Helvetica,sans-serif;
-	font-size: 0.8em;
-	line-height: .9em;
-	text-align: center;
-	background-color: #a9a9a9;
-	background-image: linear-gradient(left top, #ababab 5%, #A9A9A9 95%);
-	cursor: pointer;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-}
-*/
+
 button.close {
   background-color: #a9a9a9;
   border: 2px outset #666666;
@@ -139,85 +116,7 @@ button.dirty:after {
 	bottom: 0px;
 	right: 0px;
 }
-/*
-menu {
-  position: absolute;
-  list-style-type: none;
-  background-color: black;
-  color: white;
-  font-family: Arial,Helvetica,sans-serif;
-	padding:0;
-}
-menu div {
-  font-size: 13px;
-  border-style: outset;
-  border-width: 2px;
-  margin: 0px;
-  padding-left: 2px;
-  cursor: move;
-  font-weight: bold;
-}
 
-menu li {
-	border: 2px outset silver;
-	color: black;
-	background-color: silver;
-  font-size: 12px;
-	cursor: pointer;
-	padding-right: 12px;
-}
-
-menu li:hover {
-	border: 2px inset silver;
-}
-menu input[type="radio"] {
-	opacity: 0;
-	position: absolute;
-	width: 1px;
-	height: 1px;
-}
-
-menu label {
-	display: block;
-	width: 100%;
-	padding-left: 4px;
-	padding-right: 8px;
-white-space:nowrap;
-}
-label.sous-menu {
-	background-image: url(./images/puceRep.png);
-	background-position: right center;
-	background-repeat: no-repeat;
-}
-
-input[type="radio"]:checked + label.sous-menu {
-	background-image: url(./images/puceRepSelect.png);
-}
-
-input[type="radio"] + label {
-	background-color: transparent;
-}
-input[type="radio"]:checked + label {
-	background-color: white;
-}
-
-input[type="radio"] ~ menu {
-  margin-left: 64px;
-  display: none;
-}
-input[type="radio"]:checked ~ menu {
-  display: inline;
-}
-
-form menu  {
-  display: none;
-  z-index:20;
-}
-form:last-of-type>menu  {
-  display: block;
-}
-
-*/
 /***/
 nav {
   background-color: black;
@@ -302,12 +201,12 @@ nav input:checked ~ span {
 }
 
 
-form nav  {
+section nav  {
   display: none;
   z-index:20;
 }
 /* Affiche le menu de l'application au premier plan */
-form:last-of-type>nav  {
+section:last-of-type>nav  {
   display: block;
 }
 
