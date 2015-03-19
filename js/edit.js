@@ -29,6 +29,7 @@
  */
 var app_edit = {
 	appName : 'edit',
+	version : '0.1.0',
 	arrWindows : [],
 	quitter : function(){
 		alert("exit");

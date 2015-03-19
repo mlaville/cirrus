@@ -17,13 +17,14 @@
  * @date   revision   marc laville  30/04/2012 : Gestion des dossier ; renommage des fichiers
  * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
   * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
+  * @date   revision   marc laville  19/03/2015 : dimensionnement initial du browser
 *
  * definition de l'app cirrus
  */
 
 var app_cirrus = {
 	appName : 'cirrus',
-	version : '0.2.0',
+	version : '0.2.1',
 	root : 'Users/home/vava/-bureau/',
 //	home : './Disk/Users/home',
 	home : './Users/home',
@@ -85,9 +86,14 @@ var app_cirrus = {
 			default:
 				alert( "Type de Fichier Inconnu");
 		};
-		
 		if( contenuFenetre != null ) {
-			winManager.domFenetre(nomFichier, contenuFenetre, 'cirrus');
+			winManager.createDomPanel({
+				title: nomFichier,
+				frame: { position: {x: 260, y: 96}, size: {width:980, height:380} },
+				appName: 'cirrus',
+				item: contenuFenetre
+			});
+//			winManager.domFenetre(nomFichier, contenuFenetre, 'cirrus');
 		}
 	},
 	/*
@@ -211,7 +217,12 @@ var app_cirrus = {
 		divBrowser.className = "corpsAppli";
 		divBrowser.innerHTML = '<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>';
 
-		app_cirrus.browser = winManager.domFenetre('Fichiers', divBrowser, 'cirrus');
+		app_cirrus.browser = winManager.createDomPanel({
+			title: 'Fichiers',
+			frame: { position: {x: 260, y: 96}, size: {width:980, height:380} },
+			appName: 'cirrus',
+			item: divBrowser
+		});
 
 		changePath('~');
 
@@ -228,7 +239,13 @@ var app_cirrus = {
 		menuFactory.addItem( menuApp, menuFactory.domItemMenu(
 			'Info', 'cirrus',
 			function(){
-				winManager.domFenetre('Info', app_cirrus.info(), 'cirrus' );
+//				winManager.domFenetre('Info', app_cirrus.info(), 'cirrus' );
+				return winManager.createDomPanel({
+					title: 'Info',
+					frame: { position: {x: 160, y: 60}, size: {width:600, height:280} },
+					appName: 'cirrus',
+					item: app_cirrus.info()
+				});
 			})
 		);
 		

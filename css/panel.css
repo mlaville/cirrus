@@ -7,20 +7,22 @@
  * @version    0.10
  * @revision   $0$
  *
+ * @date revision   16/03/2015 rêgle nav -> section nav
+ *
  * regles de style des fenetre et menu
  *
  * A faire : case de miniaturisation, plein ecran
  * 
  */
 .fenetre {
-  border-style: solid;
-  border-width: 1px;
-  overflow: hidden;
-  background-color: #cccccc;
-  width: 480px;
-  height: 320px;
-  position: absolute;
-  resize:both;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	background-color: #cccccc;
+	width: 480px;
+	height: 320px;
+	position: absolute;
+	resize:both;
 	font-family: tahoma,arial,helvetica,lucida sans,sans-serif;
 }
 .fenetre input[type=radio] {
@@ -66,8 +68,8 @@ button.close::before {
   display: block;
   position: absolute;
   font-size: 1.4em;
-  left: -.1em;
-  top: -.05em;
+  left: -.05em;
+  top: .05em;
 }
 button:active {
   border: 2px inset #666666;
@@ -108,8 +110,8 @@ button.dirty:after {
   display: none;
 }
 .corpsAppli {
-  font-family: Arial,Helvetica,sans-serif;
-  background-color: white;
+	font-family: Arial,Helvetica,sans-serif;
+	background-color: white;
 	position: absolute;
 	top: 16px;
 	left: 0px;
@@ -118,7 +120,7 @@ button.dirty:after {
 }
 
 /***/
-nav {
+section nav {
   background-color: black;
   color: white;
   font-family: Arial,Helvetica,sans-serif;
@@ -128,39 +130,38 @@ nav {
   width: 120px;
 }
 
-nav div {
+section nav div {
   border-style: outset;
   border-width: 2px;
   cursor: move;
   font-size: 13px;
   margin: 0;
 }
-nav h4 {
-font-weight: bold;
-  border-style: outset;
-  border-width: 2px;
-  cursor: move;
-  font-size: 13px;
-    padding: 0 0 0 4px;
-
-  margin: 0;
+section nav h4 {
+	font-weight: bold;
+	border-style: outset;
+	border-width: 2px;
+	cursor: move;
+	font-size: 13px;
+	padding: 0 0 0 4px;
+	margin: 0;
 }
-nav ul {
+section nav ul {
     list-style-type: none;
 	padding:0;
 	margin:0;
 }
-nav li {
-  border: 2px outset silver;
-  color: black;
-  font-size: 12px;
-  cursor: pointer;
-  padding-right: 12px;
+section nav li {
+	border: 2px outset silver;
+	color: black;
+	font-size: 12px;
+	cursor: pointer;
+	padding-right: 12px;
 }
 nav li:hover {
 	border: 2px inset silver;
 }
-nav li label {
+section nav li label {
   background-color: white;
   white-space: nowrap;
   display:block;
@@ -168,7 +169,7 @@ nav li label {
   margin-right: 4px;
 }
 
-nav li label span {
+section nav li label span {
   background-color: silver;
   padding-left: 4px;
   padding-right: 8px;
@@ -185,18 +186,18 @@ nav input[type="radio"] {
 	display: none;
 }
 /* mécanique de selection des item */
-nav li label input ~ nav {
+section nav li label input ~ nav {
   display: none;
   margin-left: 116px;
   margin-top: -20px;
 }
-nav input:checked ~ nav {
+section nav input:checked ~ nav {
 	display: block;
 }
-nav input ~ span {
+section nav input ~ span {
 transition:background-color 2s;
 }
-nav input:checked ~ span {
+section nav input:checked ~ span {
   background-color: white;
 }
 
