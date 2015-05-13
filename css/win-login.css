@@ -1,3 +1,20 @@
+/**
+ * win-login.css
+ * 
+ * @auteur     marc laville
+ * @Copyleft 2015
+ * @date       13/05/2015
+ * @version    0.1
+ * @revision   $0$
+ *
+ *
+ * Fenêtre de login - theme windows
+ *
+ * Licensed under the GPL license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ */
+
+
 body {
   margin: 0;
   background: #b5f9fc none repeat scroll 0% 50%;
@@ -80,49 +97,45 @@ li a{
 	position: fixed;
   }
 
+#div_login {
+  background-color: transparent;
+  border: medium none;
+  font-family: Arial,Helvetica,sans-serif;
+  padding: 12px 0;
+  text-align: center;
+  width: 100%;
+}
+
 #div_login form {
 	display:none;
-  }
-
-#div_login {
-	border:  none;
-	margin: auto;
-	padding: 12px 0;
-	bottom: 0;
-	left: 0;
-	top: 0;
-	right: 0;
-	font-family: Arial,Helvetica,sans-serif;
-	width: 100%;
-	background-color: transparent;
-	text-align: center;
 }
+  
 #div_login label {
   margin: 6px 0;
   display: none;
   float: left;
   width: 112px;
   text-align: right;
-  color: #666666;
+  color: #666;
 }
 #div_login label:after {
   content: " : ";
 }
 
 #div_erreur {
-  display: none;
-    color: white;
-    text-align: center;
-    text-shadow: 1px 1px 2px #333333;
+	display: none;
+	color: white;
+	text-align: center;
+	text-shadow: 1px 1px 2px #333333;
  }
 #div_erreur p:before{
-  background: #D43037 none repeat scroll 0% 50%;
-padding:2px 8px;
-    border-radius:16px;
-    border: 3px solid #fff;
-    content:"X";
-    margin:8px;
-    font-family: Arial Black;
+	background: #D43037 none repeat scroll 0% 50%;
+	padding:2px 8px;
+	border-radius:16px;
+	border: 3px solid #fff;
+	content:"X";
+	margin:8px;
+	font-family: Arial Black;
  }
 
 input[type="password"] {
@@ -159,13 +172,14 @@ output {
 	line-height: 2em;
 }
 button:hover {
-  top: 3px;
+/*  top: 3px;*/
 }
 #btn_connect {
 	display:none;
 }
 #btn_connect_win {
   background: linear-gradient(to bottom, #e4f3fb 0%, #8ecdec 48%, #3f84b3 51%, #80e7fb 100%);
+  text-shadow: 1px 2px 2px #000;
   border-radius: 50%;
   border-style: none;
   box-shadow: 0 1px 2px #18384a, 0 -1px 2px #4f97bb;

@@ -1,4 +1,5 @@
 /**
+ * fileuploader.js
  * http://github.com/valums/file-uploader
  * 
  * Multiple file upload component with progress-bar, drag-and-drop. 
@@ -363,17 +364,19 @@ qq.FileUploader.prototype = {
         this._filesInProgress++;
     },
     _updateProgress: function(id, loaded, total){
-        var item = this._getItemByFileId(id);
-        var size = this._getElement(item, 'size');
-        size.style.display = 'inline';
+        var item = this._getItemByFileId(id),
+			size = this._getElement(item, 'size'),
+			progress = this._getElement(item, 'progress'),
+			text;
         
-        var text; 
         if (loaded != total){
             text = Math.round(loaded / total * 100) + '% from ' + this._formatSize(total);
         } else {                                   
             text = this._formatSize(total);
         }          
-        
+        progress.max = total;
+        progress.value = loaded;
+        size.style.display = 'inline';
         qq.setText(size, text);
     },
     _formatSize: function(bytes){

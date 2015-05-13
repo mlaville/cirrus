@@ -124,12 +124,13 @@ figure.drag {
 	background-color: white;
 	border-radius:8px;
 }
-figcaption p{
+figcaption p {
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 0.7em;
 	text-align :center;
 	word-wrap: break-word;
 	cursor:text;
+	margin:.1em;
 }
 figcaption input{
 	display:block;
@@ -148,7 +149,7 @@ figcaption input[type="text"]:disabled {
 figcaption input[type="text"] + p {
 	display:none;
 }
-figcaption input[type="text"]:disabled  + p{
+figcaption input[type="text"]:disabled  + p {
 	display :block;
 }
 

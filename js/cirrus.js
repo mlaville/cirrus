@@ -18,13 +18,14 @@
  * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
   * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
   * @date   revision   marc laville  19/03/2015 : dimensionnement initial du browser
+  * @date   revision   marc laville  13/05/2015 : utilise fileApi pour le renommage de fichiers
 *
  * definition de l'app cirrus
  */
 
 var app_cirrus = {
 	appName : 'cirrus',
-	version : '0.2.1',
+	version : '0.3.0',
 	root : 'Users/home/vava/-bureau/',
 //	home : './Disk/Users/home',
 	home : './Users/home',
@@ -93,20 +94,23 @@ var app_cirrus = {
 				appName: 'cirrus',
 				item: contenuFenetre
 			});
-//			winManager.domFenetre(nomFichier, contenuFenetre, 'cirrus');
 		}
 	},
-	/*
-	 * Rend le camap de saisie actif pour le renommage du fichier
+	/**
+	 * Rend le champ de saisie actif pour le renommage du fichier
 	 */
-	saisieLibelle : function(input) {
+	saisieLibelle : function(inputElt) {
+		var tabPath = inputElt.value.split('.'),
+			lgExt = ( tabPath.length > 1 ) ? tabPath.pop().length + 1 : 0;
 
-		input.disabled = false;
-		input.addEventListener('change', function(e){
-			rename(this);
+		inputElt.disabled = false;
+		
+		inputElt.addEventListener('change', function(e){
+			fileApi.rename(this);
 		});
-			
-		return input.focus();
+		inputElt.setSelectionRange(0, inputElt.value.length - lgExt);
+		
+		return inputElt.focus();
 	},
 
 	/*
@@ -182,12 +186,36 @@ var app_cirrus = {
 				action: './php/deskUpload.php?rep=',
 				onComplete: function(id, fileName, responseJSON){
 					if(responseJSON.success) {
-						document.getElementById("bureau").appendChild( app_cirrus.iconFichier( app_cirrus.root + fileName ) );
-	//						app_cirrus.iconFichier(fileName);
+					//	alert(fileName + '\nok');
 					} else {
-						alert(fileName);
+						alert(fileName + '\nerreur');
 					}
 				},
+				fileTemplate: '<li>' +
+						'<span class="qq-upload-file"></span>' +
+						'<span class="qq-upload-spinner"></span>' +
+						'<button class="qq-upload-cancel" type="button"></button>' +
+						'<progress class="qq-upload-progress"></progress>' +
+						'<div class="qq-upload-size"></div>' +
+					'</li>',
+				classes: {
+					// used to get elements from templates
+					button: 'qq-upload-button',
+					drop: 'qq-upload-drop-area',
+					dropActive: 'qq-upload-drop-area-active',
+					list: 'qq-upload-list',
+								
+					file: 'qq-upload-file',
+					spinner: 'qq-upload-spinner',
+					size: 'qq-upload-size',
+					progress: 'qq-upload-progress',
+					cancel: 'qq-upload-cancel',
+
+					// added to list item when upload completes
+					// used in css to hide progress spinner
+					success: 'qq-upload-success',
+					fail: 'qq-upload-fail'
+				}
 			});           
 
 		return winManager.domFenetre('Upload', divUpload, 'cirrus' );
@@ -239,7 +267,6 @@ var app_cirrus = {
 		menuFactory.addItem( menuApp, menuFactory.domItemMenu(
 			'Info', 'cirrus',
 			function(){
-//				winManager.domFenetre('Info', app_cirrus.info(), 'cirrus' );
 				return winManager.createDomPanel({
 					title: 'Info',
 					frame: { position: {x: 160, y: 60}, size: {width:600, height:280} },
@@ -263,7 +290,7 @@ var app_cirrus = {
 		);
 		menuFactory.addItem( menuFichier, menuFactory.domItemMenu(
 			'Nouveau Dossier', 'fichier', function(){
-				nouveauDossier();
+				fileApi.nouveauDossier();
 			})
 		);
 		

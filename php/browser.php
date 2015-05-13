@@ -57,6 +57,7 @@ chdir( $rootDir );
 
 $path = isset( $_REQUEST["path"] ) ? $_REQUEST["path"] : "~";
 $path = str_replace('~', "Users$homeDir", $path);
+$path = ltrim ($path, '/');
 
 $arbrePath = getDirectory( isset( $_REQUEST["root"] ) ? '.' : $path, 0, $path );
 //$arbrePath = getDirectory( $path, 0, $path );

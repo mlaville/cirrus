@@ -1,43 +1,23 @@
 .qq-uploader { position:relative; width: 100%;}
 
 .qq-upload-button {
-    display:block; /* or inline-block */
-    background-color: #aaa;
-    border-radius: 5px;
-    box-shadow: 0 1px 0 #777 inset, 0 5px 0 0 #333, 0 10px 5px #999999;
-    color: #333;
-    font-family: 'Open Sans',sans-serif;
-    font-size: 12px;
-    padding: 10px 20px;
-    position: relative;
-    text-decoration: none;
-	width:260px;
-	margin:4px;
-}
-.qq-upload-button:before {
-    background-color: #666;
-    background-image: url("./images/right_arrow.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    border-radius: 50% 50% 50% 50%;
-    box-shadow: 0 1px 0 #333 inset, 0 1px 0 #aaa;
-    content: "";
-    height: 20px;
-    margin-top: -9px;
-    position: absolute;
-    right: 24px;
-    top: 50%;
-    width: 20px;
-}
-.qq-upload-button:before:hover {
-    box-shadow: 0 1px 0 #aaa inset, 0 3px 0 #333, 0 6px 3px #777;
-    margin-top: -12px;
-    top: 50%;
+  background-color: silver;
+  background-image: url("../img/flecheUpload.png");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  border: 2px outset silver;
+  color: black;
+  cursor: pointer;
+  display: block;
+  font-family: Arial;
+  font-size: 12px;
+margin: 8px auto;
+  padding: 4px;
+  width: 260px;
 }
 
-.qq-upload-button-hover {
-	box-shadow: 0 1px 0 #aaa inset, 0 2px 0 0 #333, 0 5px 3px #999999;
-    top: 3px;
+.qq-upload-button:hover {
+  border: 2px inset silver;
  }
 .qq-upload-button-focus {outline:1px dotted black;}
 
@@ -50,15 +30,27 @@
 }
 .qq-upload-drop-area-active {background:#FF7171;}
 
-.qq-upload-list {margin:15px 35px; padding:0; list-style:disc;}
-.qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}
+.qq-upload-list {margin:12px 12px; padding:4px; list-style:none;}
+.qq-upload-list li {
+  background-color: #ccc;
+  border: 2px inset silver;
+  color: black;
+  list-style: outside none none;
+  padding: 2px 4px;
+  text-align: left;
+}
+
 .qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
     margin-right: 7px;
 }
 
 .qq-upload-file {}
 .qq-upload-spinner {display:inline-block; background: url("loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
-.qq-upload-size,.qq-upload-cancel {font-size:11px;}
+.qq-upload-size
+{font-size:8px;
+font-family: Arial;}
+.qq-upload-cancel {font-size:11px;}
+
 
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}

@@ -45,6 +45,7 @@ if($reponse["success"]) {
     $_SESSION['pass'] = $_POST['password'];
     $_SESSION['home'] =  $homeDir;
 }
+	$reponse["session"] = $_SESSION;
 
 header('Content-type: application/json');
 echo htmlspecialchars_decode(json_encode($reponse), ENT_QUOTES);

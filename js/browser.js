@@ -10,6 +10,7 @@
  * @date   revision   marc laville  09/04/2012 chargement des fichiers depuis la liste path
  * @date   revision   marc laville  30/04/2012 gestion du drop sur les repertoires du path
  * @date   revision   marc laville  29/01/2015 réécriture pur javascript
+ * @date   revision   marc laville  13/05/2015 module fileApi ; passe par les services fileApi
  * 
  * A faire : 
  * - réécriture pure selon module pattern
@@ -20,7 +21,7 @@
  * Browser
  */
  
-var arrayFic = new Array();
+// var arrayFic = new Array();
 
 function etagere( path ) {
 	return;
@@ -30,106 +31,108 @@ function chemin( path ) {
 	return;
 }
 
-function move(element, dest) {
-	var oXHR = new XMLHttpRequest();
-	
-	oXHR.onreadystatechange=function() {
-		
-		if (oXHR.readyState==4 && oXHR.status==200) {
-			resp = JSON.parse(oXHR.responseText);
-			
-			if(resp.success) {
-				element.parentElement.removeChild(element);
-				changePath(resp.dest);
-			} else {
-				// gerer l'erreur de déplacement
-			}
-		}
-		
-		return false;
-	}
-	oXHR.open("POST", "./php/moveFile.php");
-	oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
-	oXHR.send( "path=~/-bureau/" + element.querySelector("figcaption").textContent +"&dest=" + dest );
-		
-	return;
-}
+var fileApi = {
 
-// element est un input
-function rename(element) {
-	var path = null;
-	var bureau = true;
-	var inputs = document.getElementById("bureau").getElementsByTagName("input");
-	for (var i = 0; i < inputs.length; i++) {   
-		var input = inputs[i]; 
-		if ( input === element ) {   
-			path = "~/-bureau/" /*+ element.nextSibling.firstChild.nodeValue*/;
-		} 
-	}
-	if(path == null) {
-		bureau = false;
-		path = element.nextSibling.nextSibling.value;
-	}
-	path += element.nextSibling.firstChild.nodeValue;
-	
-	var oXHR = new XMLHttpRequest();
-	
-	oXHR.onreadystatechange=function() {
+	move : function(element, dest) {
+		var oXHR = new XMLHttpRequest();
 		
-		if (oXHR.readyState==4 && oXHR.status==200) {
-			resp = JSON.parse(oXHR.responseText);
+		oXHR.onreadystatechange=function() {
 			
-			if(resp.success) {
-				if(bureau) {
-					element.nextSibling.firstChild.nodeValue = resp.dest.split("/").pop();
-				} else {
+			if (oXHR.readyState==4 && oXHR.status==200) {
+				resp = JSON.parse(oXHR.responseText);
+				
+				if(resp.success) {
+					element.parentElement.removeChild(element);
 					changePath(resp.dest);
+				} else {
+					// gerer l'erreur de déplacement
 				}
-			} else {
-				// gerer l'erreur de déplacement
 			}
-		}
-		
-		return false;
-	}
-	oXHR.open("POST", "./php/renameFile.php");
-	oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
-	oXHR.send( "path=" + path +"&dest=" + element.value );
-
-	return;
-}
-
-function nouveauDossier( ) {
-
-	var li = document.getElementById("viewPath").firstChild.lastChild;
-	var path = li.querySelector("input[type='hidden']").value;
-	
-	img = li.querySelector("img");
-	if( img.getAttribute("src").split("/").pop() == "dossier.png" ) {
-		path += li.querySelector("input[type='text']").value;
-	}
-
-	var oXHR = new XMLHttpRequest();
-	
-	oXHR.onreadystatechange=function() {
-		
-		if (oXHR.readyState==4 && oXHR.status==200) {
-			resp = JSON.parse(oXHR.responseText);
 			
-			if(resp.success) {
-				changePath(resp.dest, true);
-			} else {
-				// gerer l'erreur de création de dossier
-			}
+			return false;
 		}
+		oXHR.open("POST", "./services/moveFile");
+		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
+		oXHR.send( "path=~/-bureau/" + element.querySelector("figcaption").textContent +"&dest=" + dest );
+			
+		return;
+	},
+	rename : function(element) {
+		var path = null,
+			bureau = true,
+			inputs = document.getElementById("bureau").getElementsByTagName("input");
 		
-		return false;
+		for (var i = 0; i < inputs.length; i++) {   
+			var input = inputs[i]; 
+			
+			if ( input === element ) {   
+				path = "~/-bureau/" /*+ element.nextSibling.firstChild.nodeValue*/;
+			} 
+		}
+		if(path == null) {
+			bureau = false;
+			path = element.nextSibling.nextSibling.value;
+		}
+		path += '/' + element.nextSibling.firstChild.nodeValue;
+		
+		var oXHR = new XMLHttpRequest();
+		
+		oXHR.onreadystatechange=function() {
+			
+			if (oXHR.readyState==4 && oXHR.status==200) {
+				resp = JSON.parse(oXHR.responseText);
+				
+				if(resp.success) {
+					if(bureau) {
+						element.nextSibling.firstChild.nodeValue = resp.dest.split("/").pop();
+					} else {
+						changePath(resp.dest);
+					}
+				} else {
+					// gerer l'erreur de déplacement
+				}
+			}
+			
+			return false;
+		}
+		oXHR.open("POST", "./services/renameFile");  
+		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
+		oXHR.send( "path=" + path +"&dest=" + element.value );
+
+		return;
+	},
+	nouveauDossier : function( ) {
+
+		var li = document.getElementById("viewPath").firstChild.lastChild,
+			path = li.querySelector("input[type='hidden']").value,
+			oXHR = new XMLHttpRequest(),
+			img = li.querySelector("img");
+			
+		if( img.getAttribute("src").split("/").pop() == "dossier.png" ) {
+			path += ( '/' + li.querySelector("input[type='text']").value );
+		}
+
+		oXHR.onreadystatechange=function() {
+			
+			if (oXHR.readyState==4 && oXHR.status==200) {
+				resp = JSON.parse(oXHR.responseText);
+				
+				if(resp.success) {
+					changePath(resp.dest, true);
+				} else {
+					// gerer l'erreur de création de dossier
+				}
+			}
+			
+			return false;
+		}
+		oXHR.open("POST", "./services/makeDir");  
+		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
+		oXHR.send( "path=" + path );
+			
+		return;
 	}
-	oXHR.open("POST", "./php/nouveauDossier.php");
-	oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
-	oXHR.send( "path=" + path );
-		
-	return;
 }
 
 function arrayToBrowser( tabFichier, titre, tabPath, ulPath, chemin ){
@@ -184,7 +187,7 @@ function arrayToBrowser( tabFichier, titre, tabPath, ulPath, chemin ){
 								li = li.nextElementSibling;
 							}
 							path += this.querySelector("figcaption").textContent;
-							move(ui.draggable[0], path);
+							fileApi.move(ui.draggable[0], path);
 						}
 					});
 					
@@ -212,7 +215,7 @@ function changePath(unPath, edit) {
 
 	var viewPath = document.getElementById("viewPath");
 			
-	$.getJSON('php/browser.php', 
+	$.getJSON('php/browser.php',
 		{ path: unPath, root: true }, 
 		function(data) {
 			var ulPath = document.createElement("ul"),
