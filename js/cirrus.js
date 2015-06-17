@@ -39,7 +39,6 @@ var app_cirrus = {
 		wav : 'wav.png',
 		dir : 'dir.png'
 	},
-	
 	objetPdf : function( url ) {
 		var objPdf = document.createElement("object");
 		
@@ -50,6 +49,22 @@ var app_cirrus = {
 		return objPdf;
 	},
 
+	lanceApp : function(nomApp){
+
+		switch(nomApp) {
+		
+		 case 'app_browser' :
+			app_cirrus.construitBrowser();
+			break;
+		 case 'app_test' :
+			test();
+			break;
+
+		default: 
+			alert(nomApp);
+
+		}
+	},
 	/*
 	 * Chargement d'un fichier par double click sur le bureau ou le browser
 	 */
@@ -60,7 +75,7 @@ var app_cirrus = {
 		
 		switch( nomFichier.split(".").pop().toLowerCase() ) {
 			case 'pdf' :
-				contenuFenetre = objetPdf( chemin + nomFichier );
+				contenuFenetre = app_cirrus.objetPdf( chemin + nomFichier );
 			break;
 					
 			case 'gif' : ;
@@ -70,9 +85,10 @@ var app_cirrus = {
 				contenuFenetre.setAttribute( "src", chemin + nomFichier );
 			break;
 			
-			case 'txt' :
+			case 'css' :
 			case 'js' :
 			case 'php' :
+			case 'txt' :
 				app_edit.open( figure.querySelector("input[type='hidden']").value + '/' + nomFichier, document.createElement("div") );
 			break;
 			
@@ -174,19 +190,27 @@ var app_cirrus = {
 	 * Charge le répertoire du bureau pour afficher les icones
 	 */
 	listFicBureau : function( data ){
+		var ulBureau = document.getElementById("bureau");
+		
+		while (ulBureau.firstChild) {
+		  ulBureau.removeChild(ulBureau.firstChild);
+		}
+		
 		data.result.forEach(function( item, index, array ){
-		   document.getElementById("bureau").appendChild( app_cirrus.iconFichier( app_cirrus.root + item.nom ) );
+		   ulBureau.appendChild( app_cirrus.iconFichier( app_cirrus.root + item.nom ) );
 		});
 	},
 
 	upload : function(){
 		var divUpload = document.createElement("div"),
+			listFicBureau = this.listFicBureau,
 			uploader = new qq.FileUploader({
 				element: divUpload,
 				action: './php/deskUpload.php?rep=',
 				onComplete: function(id, fileName, responseJSON){
 					if(responseJSON.success) {
 					//	alert(fileName + '\nok');
+						$.getJSON( 'php/browser.php',  { path: "~/-bureau" }, app_cirrus.listFicBureau );
 					} else {
 						alert(fileName + '\nerreur');
 					}
@@ -350,6 +374,6 @@ var app_cirrus = {
 		app_postit.sauvListPostIt();
 		winManager.quitApp( this.appName );
 		this.sauvParam();
-		deconnecte();
+		loginManager.deconnecte();
 	}
 }

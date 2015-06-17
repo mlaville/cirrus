@@ -16,6 +16,7 @@
 session_name("cirrus");
 session_start();
 
+$reponse["_POST"] = $_POST;
 $reponse["success"] = false;
 if( isset($_POST['username'], $_POST['password']) ) {
 	$homeDir = null;
@@ -33,12 +34,6 @@ if( isset($_POST['username'], $_POST['password']) ) {
 } else {
 	$reponse["msg"] = "Vous devez saisir un Nom d'utilisateur et un mot de passe !";
 }
-/*
-$reponse["POST"] = $_POST;
-$reponse["password"] = md5($_POST['password']);
-//$reponse["getcwd"] = getcwd();
-$reponse["file"] = $arrPWD;
-*/
 
 if($reponse["success"]) {
     $_SESSION['login'] = $_POST['username'];

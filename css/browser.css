@@ -37,15 +37,15 @@ img {
   margin-top: -4px;
 }
 #browser {
-  border-style: inset;
-  border-width: 2px;
-  margin: 4px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  background-color: #666666;
-  font-weight: bold;
-  font-family: trebuchet ms,arial,tahoma,verdana,sans-serif;
-  font-size: 90%;
+	border-style: inset;
+	border-width: 2px;
+	margin: 4px;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	background-color: #666666;
+	font-weight: bold;
+	font-family: trebuchet ms,arial,tahoma,verdana,sans-serif;
+	font-size: 90%;
 	position: absolute;
 	top: 190px;
 	left: 0px;
@@ -83,7 +83,7 @@ img {
   font-weight: lighter;
   left: 0px;
   top: 22px;
-  font-size: 8px;
+  font-size: 9px;
   background-color: transparent;
 }
 #browser li {

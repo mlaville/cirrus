@@ -16,7 +16,8 @@ function lanceApp(nomApp){
 	switch(nomApp) {
 	
 	 case 'app_browser' :
-		browser();
+		app_cirrus.construitBrowser();
+//		browser();
 		break;
 		
 /*	 case 'app_edit' :
@@ -36,7 +37,7 @@ function lanceApp(nomApp){
 
 	}
 }
-
+/*
 function objetPdf( url ){
 	var objPdf = document.createElement("object");
 	
@@ -46,19 +47,7 @@ function objetPdf( url ){
 
 	return objPdf;
 }
-
-function browser(){
-	var divBrowser = document.createElement("div");
-
-	divBrowser.className = "corpsAppli";
-	$(divBrowser).append('<div id="etagere"><p></p></div>\n<div id="viewPath"></div>\n<div id="browser"></div>');
-	
-	document.getElementById("workSpace").appendChild( domFenetre("Fichiers", divBrowser) );
-
-	changePath('~');
-	
-}
-
+*/
 function test(){
 	var f = domFenetre("Upload");
 

@@ -74,7 +74,8 @@ class API extends REST {
 		$lignes=file( $path, FILE_IGNORE_NEW_LINES );
 		$this->_content_type = "text/plain;charset=UTF-8";
 
- 		$this->response( implode( '<br />', $lignes ), 200 );
+// 		$this->response( implode( '<br />', $lignes ), 200 );
+ 		$this->response( implode( "\n", $lignes ), 200 );
    }
 	private function makeDir() {
 		if($this->get_request_method() != "POST"){

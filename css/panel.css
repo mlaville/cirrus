@@ -14,15 +14,16 @@
  * 
  */
 .fenetre {
-  border-style: solid;
-  border-width: 1px;
-  overflow: hidden;
-  background-color: #cccccc;
-  width: 480px;
-  height: 320px;
-  position: absolute;
-  resize:both;
 	font-family: tahoma,arial,helvetica,lucida sans,sans-serif;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	background-color: #cccccc;
+	width: 480px;
+	height: 320px;
+	position: absolute;
+	resize:both;
+	z-index:10;
 }
 .fenetre input[type=radio] {
 	float:left;
@@ -99,14 +100,15 @@ button.dirty:after {
 }
 .contenuFenetre {
   border-bottom: 2px groove silver;
-	padding: 1px;
-	position: absolute;
-	top: 22px;
-	left: 0px;
-	bottom: 8px;
-	right: 0px;
-	overflow:hidden;
+  padding: 6px;
+  position: absolute;
+  top: 22px;
+  right: 0;
+  bottom: 8px;
+  left: 0;
+  overflow: hidden;
 }
+
 .topAppli {
   padding-left: 4px;
   color: #666666;
@@ -238,4 +240,13 @@ section nav  {
 section:last-of-type>nav  {
   display: block;
 }
+.contenuFenetre textarea {
+  height: 100%;
+  width: 100%;
+  resize: none;
+  margin: -2px;
+}
 
+#workSpace section:lastchild .fenetre:lastchild {
+	z-index: 10;
+}

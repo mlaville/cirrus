@@ -4,7 +4,10 @@
 	<meta charset="utf-8">
 	<title>Cirrus</title>
 	
-	<meta name="description" content="WebOS">
+	<meta name="author" content="marc laville - polinux" />
+	<meta name="keywords" content="cirrus, cloud" />
+	<meta name="description" content="partage des données" />
+
 	<link type="text/css" rel="stylesheet" href="./css/cirrus.css">
 	<link type="text/css" rel="stylesheet" href="./css/win-login.css">
 	<link type="text/css" rel="stylesheet" href="./css/dock.css">
@@ -12,8 +15,18 @@
 	<link type="text/css" rel="stylesheet" href="./css/browser.css">
 	<link type="text/css" rel="stylesheet" href="./css/postit.css">
 	<link type="text/css" rel="stylesheet" href="./css/horloge.css">
-	<link rel="stylesheet" type="text/css" href="./css/file-uploader.css" />	
-	<link rel="stylesheet" type="text/css" href="./css/upload.css" />	
+	<link type="text/css" rel="stylesheet" href="./css/file-uploader.css" />	
+	<link type="text/css" rel="stylesheet" href="./css/upload.css" />	
+	
+<!--  <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+ -->    
+	<link rel="stylesheet" href="http://localhost/codemirror-5.3/lib/codemirror.css">
+	
+    <script src="http://localhost/codemirror-5.3/lib/codemirror.js"></script>
+	<script src="http://codemirror.net/addon/edit/matchbrackets.js"></script>
+	<script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+	<script src="http://codemirror.net/mode/css/css.js"></script>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
 <!-- 	
@@ -26,32 +39,7 @@
 		<div id="div_login">
 			<h1>cirrus</h1>
 			<hr>
-			<ul id="ul_listLog">
-				<li>
-					<a href="#">
-					<figure>
-						<img src="./css/images/win-Login-Screen.png" alt="">
-					</figure>
-					<output>me@polinux.net</output>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-					<figure>
-						<img src="./css/images/fontaine.png" alt="">
-					</figure>
-					<output>vava@polinux.net</output>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-					<figure>
-						<img src="./css/images/win-Login-Screen2.png" alt="">
-					</figure>
-					<output>HTML5</output>
-					</a>
-				</li>
-			</ul>
+			<ul id="ul_listLog"></ul>
 
 			<form name="form_log" id="form_log">
 				<figure>
@@ -67,13 +55,13 @@
 				</fieldset>
 				<hr>
 				<p id="p_msgConnexion"></p>
-				<button name="bt" type="button" id="btn_connect">connexion</button><br>
-				<button name="annule" type="button" id="btn_annule">changer d'utilisateur</button>
-			</form>
+				<button name="btn_connect" type="button" id="btn_connect">connexion</button><br>
+				<button name="btn_annule" type="button" id="btn_annule">changer d'utilisateur</button>
 			<div id="div_erreur">
 				<p>le nom d'utilisateur ou le mot de passe est incorrect</p>
-				<button name="ok" type="button" id="btn_ok">ok</button>
+				<button name="btn_ok" type="button" id="btn_ok">ok</button>
 			</div>
+			</form>
 		</div>
 		<div id="message">Ceci n'est pas Windows</div>
 	</div>
@@ -107,9 +95,10 @@
 
 	</div>
 	
- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
- 
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
 	<script type="text/javascript" src="http://lib.polinux.fr/js/jspdf.min.js"></script>
+	<script type="text/javascript" src="http://lib.polinux.fr/js/js-util.js"></script>
 
 	<script type="text/javascript" src="./js/fileuploader.js"></script>
 	<script type="text/javascript" src="./js/panel.js"></script>
@@ -118,7 +107,6 @@
 	<script type="text/javascript" src="./js/cirrus.js"></script>
 	<script type="text/javascript" src="./js/edit.js"></script>
 	<script type="text/javascript" src="./js/postIt.js"></script>
-	<script type="text/javascript" src="./js/lanceur.js"></script>
 	<script type="text/javascript" src="./js/wp.js"></script>
 
 </body>

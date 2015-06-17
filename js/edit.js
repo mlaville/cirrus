@@ -39,13 +39,39 @@ var app_edit = {
 		
 	},
 	//--- Chargement d'un fichier texte
-	load( path, out ){
-		var oXHR = new XMLHttpRequest();
+	load : function( path, out ){
+		var t = path.split('.'),
+			extention = (t.length > 1) ? t.pop().toLowerCase() : null,
+			oXHR = new XMLHttpRequest(),
+			elmt = out;
+			
 
 		oXHR.onreadystatechange=function() {
 
 			if (oXHR.readyState==4 && oXHR.status==200) {
-				out.innerHTML = oXHR.responseText;
+			
+				elmt.value = oXHR.responseText;
+				if( extention == 'js' ) {
+				
+					cm = CodeMirror.fromTextArea(elmt, {
+							mode: "javascript",
+							theme: "default",
+							lineNumbers: true
+						});
+					cm.on("change", function( ed ){
+						ed.save();
+					});
+					elmt.nextSibling.style.height='100%';
+				}
+				if( extention == 'css' ) {
+				
+					elmt_nextSibling = CodeMirror.fromTextArea(elmt, {
+							mode: "css",
+							theme: "default",
+							lineNumbers: true
+						});
+					elmt.nextSibling.style.height='100%';
+				}
 			}
 			
 			return false;
@@ -71,11 +97,7 @@ var app_edit = {
 		
 		return oXHR.send( 'path=' + path + '&str=' + texte );
 	},
-//	sauveFrontDoc : function( e ){
-//		var frontWindow = winManager.frontWindow( app_edit.appName );
-		
-//		return app_edit.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML );
-//	},
+
 	imprime: function( texte, target ){
 		var doc = new jsPDF(),
 			pos = { x:'5%', y:'120px', width:'880px', height: '420px' },
@@ -101,17 +123,13 @@ var app_edit = {
 		return winManager.domFenetre( 'Edition', objPdf, 'pdf', pos );
 	},
 	open : function( path ){
-		var divEdit = document.createElement("div"),
-			winTxt = winManager.domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), divEdit, this.appName );
-		
-		divEdit.className = "edit";
-		divEdit.contentEditable = "true";
+		var txtAreaEdit = document.createElement("textarea"),
+			winTxt = winManager.domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), txtAreaEdit, this.appName );
 
 		if( path != null ) {
-			this.load( path, divEdit )
+			this.load( path, txtAreaEdit )
 			winTxt.dataset.path = path;
 		} else {
-//			divEdit.innerHTML = 'Hello Word !';
 			winTxt.dataset.path = 'Users/home/vava/-bureau/Nouveau document.txt';
 		}
 		
@@ -131,13 +149,15 @@ var app_edit = {
 			impFrontDoc = function( app ) {
 				return function( e ) {
 					var frontWindow = winManager.frontWindow( app.appName );
-					return app.imprime( frontWindow.querySelector( '.edit' ).innerHTML.replace( /<br>/g, '\n' ), e.target );
+//					return app.imprime( frontWindow.querySelector( '.edit' ).innerHTML.replace( /<br>/g, '\n' ), e.target );
+					return app.imprime( frontWindow.querySelector( 'textarea' ).value, e.target );
 				}
 			};
 			sauveFrontDoc = function( app ) {
 				return function( e ) {
 					var frontWindow = winManager.frontWindow( app.appName );
-					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML, e.target );
+//					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML, e.target );
+					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( 'textarea' ).value, e.target );
 				}
 			};
 		menuFactory.addItem( menuApp, itemFichier );
