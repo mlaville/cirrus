@@ -25,7 +25,7 @@ function initApp () {
 		icons = $("#dock ul li");
 	
 	icons.dblclick(function(){
-		lanceApp.lanceApp(this.id);
+		app_cirrus.lanceApp(this.id);
 	});
 	
 	/* Affichage du menu cirrus */

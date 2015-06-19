@@ -78,6 +78,7 @@ var app_cirrus = {
 				contenuFenetre = app_cirrus.objetPdf( chemin + nomFichier );
 			break;
 					
+			case 'bmp' : ;
 			case 'gif' : ;
 			case 'png' : ;
 			case 'jpg' :
@@ -88,6 +89,7 @@ var app_cirrus = {
 			case 'css' :
 			case 'js' :
 			case 'php' :
+			case 'xml' :
 			case 'txt' :
 				app_edit.open( figure.querySelector("input[type='hidden']").value + '/' + nomFichier, document.createElement("div") );
 			break;

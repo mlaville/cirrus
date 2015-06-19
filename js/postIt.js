@@ -13,6 +13,7 @@
  * A faire
  * - Positionnement à la création
  * - gerer la mise à la corbeille
+ * - tester
  * - Tester si le post-it est vide ; 
  *
  * Gestion des posti-it
@@ -143,12 +144,13 @@
 		
 		this.chargeListPostIt();
 			/* Activation de la corbeille */
+			/* a faire : tester si le ui correspond bien à un post-it */
 		$("#recycleur").droppable({
 			tolerance: 'touch',
 			hoverClass: "recycle",
 			drop: function( event, ui ) {
 				app_postit.dropPostIt( ui.draggable[0] );
-				this.classList.add("rempli");  
+				this.classList.add("rempli");  // A faire : gerer par les css
 			}
 		});
 

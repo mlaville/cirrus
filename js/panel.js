@@ -4,8 +4,8 @@
  * @auteur     marc laville
  * @Copyleft 2013-2015
  * @date       13/12/2013
- * @version    0.10
- * @revision   $0$
+ * @version    0.2.0
+ * @revision   $8$
  *
  * Fonction generique de création de fenetre et menu
  *
@@ -16,6 +16,7 @@
  * @date   revision   marc laville  01/03/2015 : revise le mécanisme de mise au premier plan
  * @date   revision   marc laville  16/03/2015 : nettoyage du code
  * @date   revision   marc laville  19/03/2015 : nouvelle methode createDomPanel + gestion du decalage de position à la creation de la fenetre
+ * @date   revision   marc laville  19/06/2015 : Modifie de bouton close quand la fenetre est éditée
  *
  * A faire : case de miniaturisation, plein ecran
  *
@@ -136,6 +137,7 @@ var winManager = (function (document) {
 				labelRd = divFenetre.appendChild( document.createElement("label") ),
 				inputRd = labelRd.appendChild( document.createElement("input") ),
 				divTitre = labelRd.appendChild( document.createElement("div") ),
+				chkDirty = document.createElement("input"),
 				btnClose = document.createElement("button"),
 				divContent = labelRd.appendChild( document.createElement("div") ),
 				nomAppli = options.appName || '_',
@@ -150,6 +152,7 @@ var winManager = (function (document) {
 					
 					return divFenetre.parentNode.removeChild(divFenetre);
 				};
+				
 			inputRd.setAttribute( 'type', 'radio' );
 			inputRd.setAttribute( 'name', nomAppli );
 			inputRd.setAttribute( 'form', nomAppli );
@@ -170,6 +173,8 @@ var winManager = (function (document) {
 
 			btnClose.addEventListener( "click", closeFenetre );
 			
+			chkDirty.setAttribute( 'type', 'checkbox' );
+			divTitre.appendChild( chkDirty );
 			divTitre.appendChild( btnClose );
 			divTitre.appendChild( document.createTextNode(options.title) );
 			
@@ -283,4 +288,3 @@ var menuFactory = (function (document) {
 	addSubMenu : addSubMenu
   };
 }(window.document));
-

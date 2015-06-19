@@ -4,7 +4,7 @@
  * @auteur     marc laville
  * @Copyleft 2015
  * @date       27/01/2015
- * @version    0.1
+ * @version    0.2.0
  * @revision   $0$
  *
  * module app_edit
@@ -15,9 +15,9 @@
  * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
  * @date   revision   marc laville  10/02/2015 : Enregistrement du ficjier txt
  * @date revision marc laville 17/02/2015 : Edition -> pdf
+ * @date revision marc laville 18/06/2015 : Gestion de la colorisation syntaxique grace à CodeMirror
  *
  * A faire
- * - memoriser le focus (selection) lorsqu'il est perdu par le passage sur une autre fenetre
  * - gerer le quit de l'appli
  *
  * Licensed under the GPL license:
@@ -29,47 +29,35 @@
  */
 var app_edit = {
 	appName : 'edit',
-	version : '0.1.0',
+	version : '0.2.0',
 	arrWindows : [],
-	quitter : function(){
-		alert("exit");
-	},
-	keyWindow( ) {
+	quitter : function(){ alert("exit"); },
+	keyWindow : function() {
 		return 
 		
 	},
 	//--- Chargement d'un fichier texte
-	load : function( path, out ){
+	load : function( path, elmt ){
 		var t = path.split('.'),
+			// Calcul le mode de l'editeur syntaxique
 			extention = (t.length > 1) ? t.pop().toLowerCase() : null,
-			oXHR = new XMLHttpRequest(),
-			elmt = out;
-			
+			cmMode = { js: 'javascript', css: 'css', xml: 'xml', php: 'php' }[extention] || null,
+			oXHR = new XMLHttpRequest();
 
 		oXHR.onreadystatechange=function() {
 
 			if (oXHR.readyState==4 && oXHR.status==200) {
 			
 				elmt.value = oXHR.responseText;
-				if( extention == 'js' ) {
-				
-					cm = CodeMirror.fromTextArea(elmt, {
-							mode: "javascript",
+				if( cmMode != null ) {
+					var cm = CodeMirror.fromTextArea(elmt, {
+							mode: cmMode,
 							theme: "default",
 							lineNumbers: true
 						});
-					cm.on("change", function( ed ){
-						ed.save();
+					cm.on("blur", function( ){
+						cm.save();
 					});
-					elmt.nextSibling.style.height='100%';
-				}
-				if( extention == 'css' ) {
-				
-					elmt_nextSibling = CodeMirror.fromTextArea(elmt, {
-							mode: "css",
-							theme: "default",
-							lineNumbers: true
-						});
 					elmt.nextSibling.style.height='100%';
 				}
 			}
@@ -79,7 +67,12 @@ var app_edit = {
 
 		oXHR.open('GET', './services/loadFile?path=' + path);
 		oXHR.send( );
+		
+		return elmt;
 	},
+	/*
+	  * Enregistrement d'un fichier text
+	  */
 	sauve : function( path, texte, target ){
 		var oXHR = new XMLHttpRequest();
 
@@ -97,7 +90,9 @@ var app_edit = {
 		
 		return oXHR.send( 'path=' + path + '&str=' + texte );
 	},
-
+	/*
+	  * Imprime un fichier text
+	  */
 	imprime: function( texte, target ){
 		var doc = new jsPDF(),
 			pos = { x:'5%', y:'120px', width:'880px', height: '420px' },
@@ -124,7 +119,13 @@ var app_edit = {
 	},
 	open : function( path ){
 		var txtAreaEdit = document.createElement("textarea"),
-			winTxt = winManager.domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), txtAreaEdit, this.appName );
+			winTxt = winManager.domFenetre( 'Edit - ' + ( path || 'Nouveau document' ), txtAreaEdit, this.appName ),
+			dirty = function(event) {
+				var ck = winTxt.querySelector('.titreFenetre input[type=checkbox]');
+				
+				return ck.checked = true; 
+			};
+;
 
 		if( path != null ) {
 			this.load( path, txtAreaEdit )
@@ -133,14 +134,16 @@ var app_edit = {
 			winTxt.dataset.path = 'Users/home/vava/-bureau/Nouveau document.txt';
 		}
 		
+		txtAreaEdit.addEventListener( 'change', dirty );
+		txtAreaEdit.addEventListener( 'keyup', dirty );
+		
 		return this.arrWindows.push( winTxt );
 	},
-	nouveauDoc : function( evt ){
-		var gereMenu = function( ) {
-			evt.target.checked = false;
-		}
+	nouveauDoc : function( evt ) {
+		var gereMenu = function( ) { evt.target.checked = false; };
+		
 		app_edit.open( null );
-		window.setTimeout(gereMenu, 500);
+		return window.setTimeout(gereMenu, 500);
 	},
 	appMenu : function(){
 		var menuApp = menuFactory.domMenu("Edit"),
@@ -149,14 +152,14 @@ var app_edit = {
 			impFrontDoc = function( app ) {
 				return function( e ) {
 					var frontWindow = winManager.frontWindow( app.appName );
-//					return app.imprime( frontWindow.querySelector( '.edit' ).innerHTML.replace( /<br>/g, '\n' ), e.target );
+
 					return app.imprime( frontWindow.querySelector( 'textarea' ).value, e.target );
 				}
-			};
+			},
 			sauveFrontDoc = function( app ) {
 				return function( e ) {
 					var frontWindow = winManager.frontWindow( app.appName );
-//					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( '.edit' ).innerHTML, e.target );
+					
 					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( 'textarea' ).value, e.target );
 				}
 			};

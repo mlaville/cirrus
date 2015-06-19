@@ -7,6 +7,8 @@
  * @version    0.10
  * @revision   $0$
  *
+ * @date   revision   marc laville  18/06/2015 affect le z-index 10 pour les fenêtre
+ * @date   revision   marc laville  style du bouton close -> dirty
  *
  * regles de style des fenetre et menu
  *
@@ -82,14 +84,21 @@ button:active {
   left: .2em;
   top: .2em;
 }
-button.dirty:after {
-  content:'\25CF';
-  color: #a9a9a9;
-  position:absolute;
-  top:.0em;
-  left:.0em;
-  font-size:1.4em;
- }
+
+.titreFenetre input[type=checkbox]:checked+button.close:after {
+    content:'\25CF';
+    color: #a9a9a9;
+    position:absolute;
+    top:-.05em;
+    left:-.05em;
+    font-size:1.6em;
+}
+
+.titreFenetre input[type=checkbox] {
+    float:left;
+    width:1px;
+    visibility:hidden;
+}
 
 .basFenetre {
   border: 1px groove #999999;
