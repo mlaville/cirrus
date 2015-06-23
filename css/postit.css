@@ -1,26 +1,78 @@
 /************ Classes ************/
 
-.postick {
-	position:absolute;
-	width:96px;
-	height:96px;
-	padding:8px 2px 2px 2px;
-	background:#FFFC7F;
-	box-shadow:2px 2px 2px #999999;
-	cursor:move;
-}
 
-/* Content to be editable inside the postick */
-.editable {
-	position:relative;
-	font-family: Lucida Handwriting;
-	font-size: 0.7em;
-	height:100%;
-	overflow:hidden;
-	text-shadow: 1px 1px 0px white;
-	cursor:text;
+.post-it {
+  padding: 8px 2px 2px;
+  background: #fffc7f none repeat scroll 0;
+  cursor: move;
+  height: 96px;
+  position: absolute;
+  width: 96px;
+  top: 64px;
 }
-
-.editable:hover {
+.post-it textarea {
+  background-color: transparent;
+  border: medium none;
+  font-family: Lucida Handwriting, Script MT Bold;
+  font-size: .65em;
+  height: 86px;
+  left: 2px;
+  overflow: hidden;
+  position: absolute;
+  resize: none;
+  top: 12px;
+  width: 92px;
+}
+.post-it textarea:hover {
 	background:#FFFCAF;
 }
+
+icon-postit { 
+	background-color: rgba (255, 255, 128, 1.0);
+	margin: 4px;
+	padding: 10px;
+	min-width: 72px;
+	min-height: 72px;
+	float:left;
+	box-shadow:  1px -1px rgb(0, 0, 0),
+		 2px -2px rgb(247, 247, 120),
+		 3px -3px rgb(243, 243, 116),
+		 4px -4px rgb(239, 239, 112),
+		 5px -5px rgb(235, 235, 108),
+		 6px -6px rgb(231, 231, 104),
+		 7px -7px rgb(227, 227, 100),
+		 8px -8px rgb(223, 223, 96),
+		 9px -9px rgb(219, 219, 92),
+		 10px -10px rgb(215, 215, 88),
+		 11px -11px rgb(211, 211, 84),
+		 12px -12px rgb(207, 207, 80),
+		 13px -13px rgb(203, 203, 76),
+		 14px -14px rgb(199, 199, 72),
+		 15px -15px rgb(195, 195, 68),
+		 16px -16px rgb(191, 191, 64),
+		 17px -17px rgb(187, 187, 60),
+		 18px -18px rgb(183, 183, 56),
+		 19px -19px rgb(179, 179, 52),
+		 20px -20px rgb(175, 175, 48),
+		 21px -21px rgb(171, 171, 44),
+		 22px -22px rgb(167, 167, 40),
+		 23px -23px rgb(163, 163, 36),
+		 24px -24px rgb(159, 159, 32),
+		 25px -25px rgb(155, 155, 28),
+		 26px -26px rgb(151, 151, 24),
+		 27px -27px rgb(147, 147, 20),
+		 28px -28px rgb(143, 143, 16),
+		 29px -29px rgb(139, 139, 12),
+		 30px -30px rgb(135, 135, 8),
+		 31px -31px rgb(131, 131, 4),
+		 32px -32px rgb(127, 127, 0),
+		 33px -33px rgb(123, 123, 0),
+		 34px -34px rgb(119, 119, 0),
+		 35px -35px rgb(115, 115, 0),
+		 36px -36px rgb(111, 111, 0),
+		 37px -37px rgb(107, 107, 0),
+		 38px -38px rgb(103, 103, 0),
+		 39px -39px rgb(0, 0, 0);
+		
+}
+

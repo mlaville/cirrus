@@ -11,8 +11,9 @@
  *
  * REST api de gestion des fichiers cirrus (edit)
  *
- * @date   revision   marc laville  10/02/2015 Gestion des retour � la ligne (\n)
- * @date   revision   marc laville  13/05/2015 Gestion op�ration disque  : mkdir ; rename
+ * @date   revision   marc laville  10/02/2015 Gestion des retour à la ligne (\n)
+ * @date   revision   marc laville  13/05/2015 Gestion opération disque  : mkdir ; rename
+ * @date   revision   marc laville  22/06/2015 Révision saveFile pour gèrer le cas où le texte passé en post contient le caractère &
  *
  * A Faire :
  * - gestion du parametre $repHome
@@ -38,7 +39,27 @@ class API extends REST {
 		
 		$homeDir = $repHome;
 	}
+
+	public function parse_query_string($url, $nbParam=null, $qmark=true) {
 	
+		if ($qmark) {
+			$pos = strpos($url, "?");
+			if ($pos !== false) {
+				$url = substr($url, $pos + 1);
+			}
+		}
+		
+		if (empty($url))
+			return false;
+			
+		$tokens = is_null($nbParam) ? explode("&", $url) : explode("&", $url, $nbParam);
+		$urlVars = array();
+		foreach ($tokens as $token) {
+			$tab = explode("=", $token, 2);
+			$urlVars[urldecode($tab[0])] = $tab[1];
+		}
+		return $urlVars;
+	}
 	/*
 	 * Dynmically call the method based on the query string
 	 */
@@ -57,13 +78,18 @@ class API extends REST {
 		if($this->get_request_method() != "POST"){
 			$this->response('',406);
 		}
-		$txt = preg_replace("/\<br\s*\/?\>/i", "\n", $_POST['str']);
+		
+		$roughHTTPPOST = file_get_contents("php://input");
+		$rep = array( 'roughHTTPPOST' => strlen( $roughHTTPPOST ) );
+		//parse it into vars
+		$post = $this->parse_query_string($roughHTTPPOST, 2, false); // on attend 2 paramètres
+		$str = $post['str'];
+	
+		$rep['taille-entree'] = strlen( $str );
+		$rep['taille-sortie'] = file_put_contents( $this->path_root . ltrim( $post['path'], '/' ), $str );
+		
+		$rep['success'] = ( $rep['taille-sortie'] !== false );
 
-		if( file_put_contents( $this->path_root . ltrim( $_POST['path'], '/' ), $txt ) ) {
-			$rep = array( 'success' => true );
-		} else {
-			$rep = array( 'success' => false );
-		};
  		$this->response( json_encode($rep), 200 );
 	}
 	private function loadFile() {
@@ -91,8 +117,8 @@ class API extends REST {
 		/**
 		 * A faire : 
 		 * - controler les erreurs
-		 * - tester l'existence du fichier renomm�
-		 * - contr�ler l'ecrasement des fichier destination
+		 * - tester l'existence du fichier renommé
+		 * - contrôler l'ecrasement des fichier destination
 		 */
 		$succes = mkdir($path); //( $path, $dest );
 
@@ -123,8 +149,8 @@ class API extends REST {
 		/**
 		 * A faire : 
 		 * - controler les erreurs
-		 * - tester l'existence du fichier renomm�
-		 * - contr�ler l'ecrasement des fichier destination
+		 * - tester l'existence du fichier renommé
+		 * - contrôler l'ecrasement des fichier destination
 		 */
 		$reponse = array(
 			"success" => $succes,

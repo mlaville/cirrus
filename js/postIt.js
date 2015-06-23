@@ -4,11 +4,12 @@
  * @auteur     marc laville
  * @Copyleft 2012-2015
  * @date       14/02/1012
- * @version    0.2
- * @revision   $1$
+ * @version    0.5
+ * @revision   $3$
  *
  * @date   revision   marc laville  27/02/2012 : gestion de retours à la line
  * @date   revision   marc laville  19/01/2015 : formalisation du code en un module
+ * @date   revision   marc laville  20/06/2015 : utilisation d'un textarea pour le contenu du post-it (au lieu d'un div)
  *
  * A faire
  * - Positionnement à la création
@@ -23,23 +24,18 @@
 	// Création d'un post-it
 	creePostIt : function( param ){
 		var element = document.createElement("div"),
-			divTxt = element.appendChild( document.createElement("div") );
+			textArea = element.appendChild( document.createElement("textarea") );
 		
-		element.className = "postick";
+		element.className = "post-it";
 		element.style.left = param.x;
 		element.style.top = param.y;
-	
-		divTxt.className = "editable";
-		divTxt.setAttribute('contenteditable', true);
+
 		if( param.contenu != undefined ) {
-			param.contenu.forEach(function(item) {
-				divTxt.appendChild( document.createTextNode(item) );
-				divTxt.appendChild( document.createElement("br") );
-			});
+			textArea.value = Array.isArray(param.contenu) ? param.contenu.join('\n') : param.contenu;
 		}
 
 		$(element).draggable({
-			cancel: '.editable', 
+			cancel: 'textarea', 
 			containment: "parent"
 		});
 
@@ -59,47 +55,40 @@
 	dropPostIt : function( unDiv ){
 		var	ul = document.getElementById("list_recycleur").querySelector("ul"),
 			li = ul.appendChild( document.createElement("li") );
-			// Récupère le contenu du post-it pour le placer dans la corbeille
-			li.appendChild( unDiv.querySelector(".editable") )
-				.classList.remove("editable");
-			// efface le postit
-			unDiv.parentNode.removeChild(unDiv);
+			
+		// Récupère le contenu du post-it pour le placer dans la corbeille
+		li.appendChild( unDiv.querySelector("textarea") );
+		// efface le postit
+		return unDiv.parentNode.removeChild(unDiv);
 	},
 	// Representation json de l'ensemble des post-it
 	listPostItInElement : function( elt ){
-		var postIts = elt.querySelectorAll("div.postick"),
-			list = new Array();
+		var postIts = elt.querySelectorAll("div.post-it"),
+			list = [];
 		
 		for( var i = postIts.length - 1 ; i >= 0  ; i-- ) {
 			var p = postIts.item(i),
 				style = window.getComputedStyle(p),
-				nd = p.querySelector(".editable").firstChild,
-				listNode = new Array(),
-				str;
-			
-			while(nd) {
-				str = nd.nodeValue;
-				if( str != null) {
-					listNode.push(str);
-				}
-				nd = nd.nextSibling;
+				contenu = p.querySelector("textarea").value.trim();
+
+			if( contenu.length ) {
+				list.push({
+					x : style.getPropertyValue("left"),
+					y : style.getPropertyValue("top"),
+					contenu : contenu
+				});
 			}
-			list.push({
-				x : style.getPropertyValue("left"),
-				y : style.getPropertyValue("top"),
-				contenu : listNode
-			});
 		}
 		
 		return JSON.stringify(list);
-		
 	},
 	// Representation json de l'ensemble des post-it
 	listPostIt : function(){
 		return this.listPostItInElement( document.getElementById("workSpace") );
 	},
 	chargeListPostIt : function(){
-		var oXHR = new XMLHttpRequest();
+		var oXHR = new XMLHttpRequest(),
+			addPostit = function(item) { return app_postit.ajoutPostIt(item); };
 
 		oXHR.onreadystatechange=function() {
 		
@@ -107,9 +96,7 @@
 				resp = JSON.parse(oXHR.responseText);
 				
 				if(resp.success) {
-					resp.postit.forEach(function(item) {
-						app_postit.ajoutPostIt(item);
-					});
+					resp.postit.forEach(addPostit);
 				} else {
 					alert("erreur chargement des posts-it");
 				}
@@ -118,8 +105,7 @@
 			return false;
 		}
 
-		oXHR.open("POST", "./php/postIt.php");  
-		oXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  
+		oXHR.open("GET", "./php/postIt.php");  
 		oXHR.send( );
 	},
 	sauvListPostIt : function(){

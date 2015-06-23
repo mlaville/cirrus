@@ -13,11 +13,12 @@
  * @date   revision   marc laville  02/02/2015 trame de la methode sauve
  * @date   revision   marc laville  04/02/2015 : Gestion des fenetre grace au winManager
  * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
- * @date   revision   marc laville  10/02/2015 : Enregistrement du ficjier txt
+ * @date   revision   marc laville  10/02/2015 : Enregistrement du fichier txt
  * @date revision marc laville 17/02/2015 : Edition -> pdf
  * @date revision marc laville 18/06/2015 : Gestion de la colorisation syntaxique grace à CodeMirror
  *
  * A faire
+ * - marquer la fentre editée sur l'évènement change de codeMirror
  * - gerer le quit de l'appli
  *
  * Licensed under the GPL license:
@@ -55,9 +56,9 @@ var app_edit = {
 							theme: "default",
 							lineNumbers: true
 						});
-					cm.on("blur", function( ){
-						cm.save();
-					});
+//					cm.on("blur", function( ){ cm.save(); });
+					cm.on("change", function( ){ cm.save(); });
+					
 					elmt.nextSibling.style.height='100%';
 				}
 			}
@@ -66,21 +67,21 @@ var app_edit = {
 		}
 
 		oXHR.open('GET', './services/loadFile?path=' + path);
-		oXHR.send( );
+		oXHR.send();
 		
 		return elmt;
 	},
 	/*
 	  * Enregistrement d'un fichier text
 	  */
-	sauve : function( path, texte, target ){
+	sauve : function( path, texte, callBack ){
 		var oXHR = new XMLHttpRequest();
 
 		oXHR.onreadystatechange=function() {
 
 			if (oXHR.readyState==4 && oXHR.status==200) {
-				target.checked=false;
-				alert( oXHR.responseText );
+				callBack();
+//				alert( oXHR.responseText );
 			}
 			
 			return false;
@@ -158,9 +159,13 @@ var app_edit = {
 			},
 			sauveFrontDoc = function( app ) {
 				return function( e ) {
-					var frontWindow = winManager.frontWindow( app.appName );
+					var frontWindow = winManager.frontWindow( app.appName ),
+						succesSauve = function() {
+							frontWindow.querySelector('.titreFenetre input[type=checkbox]').checked = false;
+							e.target.checked = false;
+						};
 					
-					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( 'textarea' ).value, e.target );
+					return app.sauve( frontWindow.dataset.path, frontWindow.querySelector( 'textarea' ).value, succesSauve );
 				}
 			};
 		menuFactory.addItem( menuApp, itemFichier );
