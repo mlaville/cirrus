@@ -159,6 +159,10 @@ audio {
 	margin:20px auto;
 }
 
+video {
+	height: 100%;
+}
+
 progress {
 	border: medium inset black;
 	background-color: #797979;

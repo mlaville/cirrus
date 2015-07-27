@@ -4,7 +4,7 @@
  * @auteur marc laville
  * @copyleft 2012
  * @date 17/03/1012
- * @version    0.02
+ * @version    0.03
  * @revision   $1$
  *
  * A faire : réécriture pure javascript
@@ -19,6 +19,8 @@
   * @date   revision   marc laville  08/02/2015 : gestion du menu par menuFactory
   * @date   revision   marc laville  19/03/2015 : dimensionnement initial du browser
   * @date   revision   marc laville  13/05/2015 : utilise fileApi pour le renommage de fichiers
+  * @date   revision   marc laville  27/07/2015 : createContenuAudio + gere extention mp3
+  * @date   revision   marc laville  27/07/2015 : createContenuVideo + gere extention mp4
 *
  * definition de l'app cirrus
  */
@@ -32,11 +34,17 @@ var app_cirrus = {
 	wp : document.getElementById("workSpace"), 
 	tabExtention : {
 		txt : 'txt.png',
-		jpg : 'jpeg.png',
+		js : 'js.png',
+		css : 'css.png',
+		xml : 'xml.png',
+		php : 'php.png',
+		jpg : 'jpg.png',
 		gif : 'gif.png',
 		png : 'png.png',
 		pdf : 'pdf.png',
 		wav : 'wav.png',
+		mp3 : 'mp3.png',
+		mp4 : 'mp4.png',
 		dir : 'dir.png'
 	},
 	objetPdf : function( url ) {
@@ -71,9 +79,35 @@ var app_cirrus = {
 	dblClickFile : function(figure) {
 		var chemin = "./Disk/" + figure.querySelector("input[type='hidden']").value + "/",
 			nomFichier = figure.querySelector("input").value,
-			contenuFenetre = null;
+			extention = nomFichier.split(".").pop().toLowerCase(),
+			contenuFenetre = null,
+			createContenuAudio = function( extention ) {
+				var contenu = document.createElement("div"),
+					audio = contenu.appendChild( document.createElement("audio") ),
+					source = audio.appendChild( document.createElement("source") ),
+					mediaType = 'audio/' + { mp3: 'mpeg' , ogg: 'ogg' , wav: 'wav' }[extention];
+					
+				audio.setAttribute( 'controls', 'controls' );
+				source.setAttribute( "type", mediaType );
+				source.setAttribute( "src", chemin + nomFichier );
+				
+				return contenu;
+			},
+			createContenuVideo = function( extention ) {
+				var contenu = document.createElement("div"),
+					video = contenu.appendChild( document.createElement("video") ),
+					source = video.appendChild( document.createElement("source") ),
+					mediaType = 'video/' + { mp4: 'mp4' }[extention];
+					
+				video.setAttribute( 'controls', 'controls' );
+				source.setAttribute( "type", mediaType );
+				source.setAttribute( "src", chemin + nomFichier );
+				
+				return contenu;
+			},
+			size = { width: 980, height: 380 };
 		
-		switch( nomFichier.split(".").pop().toLowerCase() ) {
+		switch( extention ) {
 			case 'pdf' :
 				contenuFenetre = app_cirrus.objetPdf( chemin + nomFichier );
 			break;
@@ -94,12 +128,16 @@ var app_cirrus = {
 				app_edit.open( figure.querySelector("input[type='hidden']").value + '/' + nomFichier, document.createElement("div") );
 			break;
 			
+			case 'mp3' :
 			case 'wav' :
-				contenuFenetre = document.createElement("audio");
-				contenuFenetre.setAttribute( "controls", "controls" );
-				source = contenuFenetre.appendChild( document.createElement("source") );
-				source.setAttribute( "type", "audio/wav" );
-				source.setAttribute( "src", chemin + nomFichier );
+				contenuFenetre = createContenuAudio(extention);
+				size.width = 396;
+				size.height = 96;
+			break;
+			case 'mp4' :
+				contenuFenetre = createContenuVideo(extention);
+				size.width = 396;
+				size.height = 328;
 			break;
 			
 			default:
@@ -108,7 +146,7 @@ var app_cirrus = {
 		if( contenuFenetre != null ) {
 			winManager.createDomPanel({
 				title: nomFichier,
-				frame: { position: {x: 260, y: 96}, size: {width:980, height:380} },
+				frame: { position: { x: 260, y: 96 }, size: size },
 				appName: 'cirrus',
 				item: contenuFenetre
 			});
