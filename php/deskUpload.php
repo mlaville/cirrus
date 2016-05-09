@@ -10,6 +10,7 @@
  *
  * A faire : 
  * - tester les droits sur les dossiers
+ * - parametrage sizeLimit
  */
 /*
  * Gestion des Uploads
@@ -25,7 +26,7 @@ $path = str_replace('~', $homeDir, "../Disk/Users/~/-bureau/");
 // list of valid extensions, ex. array("jpeg", "xml", "bmp")
 $allowedExtensions = array();
 // max file size in bytes
-$sizeLimit = 10 * 1024 * 1024;
+$sizeLimit = 64 * 1024 * 1024;
 $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 $result = $uploader->handleUpload($path);
 // to pass data through iframe you will need to encode all html tags
